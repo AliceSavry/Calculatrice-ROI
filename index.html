@@ -3,237 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculatrice ROI & ROAS - BTS Com</title>
+    <title>Calculatrice Détaillée ROI & ROAS</title>
     <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            padding: 20px;
             margin: 0;
+            min-height: 100vh;
         }
-        .calculator-card {
-            background: white;
+
+        .calculator-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 500px;
         }
-        h2 {
+
+        h1 {
             text-align: center;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 1rem;
         }
-        .input-group {
-            margin-bottom: 1.5rem;
+
+        /* Sections */
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+        .card-box {
+            background-color: #f1f5f9;
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        /* Grille pour le CA (Volume x Prix) */
+        .revenue-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr; /* Input x Input */
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .operator {
+            font-weight: bold;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            text-align: center;
+            padding-top: 1.5rem; /* Aligner avec les inputs */
+        }
+
+        /* Inputs */
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
         label {
-            display: block;
-            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: #34495e;
+            margin-bottom: 0.5rem;
         }
-        .hint {
-            font-size: 0.85em;
-            color: #7f8c8d;
-            margin-top: 0.2rem;
-            font-style: italic;
-        }
+
         input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
+            padding: 10px;
+            border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
-            box-sizing: border-box; 
-            transition: border-color 0.3s;
-        }
-        input[type="number"]:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        /* Style spécifique pour montrer que c'est interactif */
-        input[type="number"]:active {
-            background-color: #fafdff;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.2s;
         }
 
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 8px;
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+        }
+
+        /* Affichage du Total CA en temps réel */
+        .total-display {
+            text-align: right;
             font-size: 1.1rem;
             font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-bottom: 1rem;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        
-        /* Résultats */
-        .results-container {
-            margin-top: 1rem;
-            display: none; /* Caché par défaut */
-            border-top: 2px solid #f0f2f5;
-            padding-top: 1.5rem;
-            animation: fadeIn 0.5s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            color: var(--primary);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #cbd5e1;
         }
 
-        .result-box {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+        /* Liste des charges */
+        .costs-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .cost-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .cost-label-text {
+            font-size: 0.9rem;
+        }
+
+        .media-row input {
+            border-color: #93c5fd; /* Bleu clair pour distinguer le média */
+            background-color: #eff6ff;
+        }
+
+        /* Résultats */
+        .results-section {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .result-card {
+            background: var(--text);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
             text-align: center;
-            transition: all 0.3s ease;
         }
-        .roas-box {
-            background-color: #e8f6f3;
-            border: 1px solid #a2d9ce;
-            color: #16a085;
+
+        .result-card.roas-card {
+            background: #0f172a; /* Foncé */
         }
-        .roi-box {
-            background-color: #ebf5fb;
-            border: 1px solid #a9cce3;
-            color: #2980b9;
+
+        .result-card.roi-card {
+            background: var(--primary);
         }
-        .roi-negative {
-            background-color: #fdebd0;
-            border: 1px solid #f5cba7;
-            color: #d35400;
-        }
-        .result-title {
-            font-size: 0.9em;
+
+        .metric-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 5px 0;
             display: block;
         }
-        .result-value {
-            font-size: 2em;
-            font-weight: bold;
-            display: block;
+
+        .metric-desc {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            line-height: 1.2;
         }
-        .explanation {
-            font-size: 0.9em;
-            margin-top: 5px;
-            display: block;
-        }
-        .summary {
-            margin-top: 10px;
-            font-weight: bold;
+
+        /* Indicateur de rentabilité globale */
+        .global-status {
+            grid-column: 1 / -1;
+            padding: 1rem;
+            border-radius: 8px;
             text-align: center;
+            font-weight: bold;
+            margin-top: 1rem;
+            display: none;
         }
+
     </style>
 </head>
 <body>
 
-<div class="calculator-card">
-    <h2>💰 Calculatrice Rentabilité</h2>
+<div class="calculator-container">
+    <h1>📊 Calculateur de Campagne</h1>
 
-    <div class="input-group">
-        <label for="revenue">1. Chiffre d'Affaires (CA) généré (€)</label>
-        <input type="number" id="revenue" placeholder="Ex: 5000" oninput="calculateMetrics()">
-        <div class="hint">Volume de ventes x Panier moyen</div>
+    <div class="section-title">1. Recettes (Le Chiffre d'Affaires)</div>
+    <div class="card-box">
+        <div class="revenue-grid">
+            <div class="input-wrapper">
+                <label>Nombre de Ventes</label>
+                <input type="number" id="volume" placeholder="0" oninput="calculate()">
+            </div>
+            <div class="operator">×</div>
+            <div class="input-wrapper">
+                <label>Panier Moyen (€)</label>
+                <input type="number" id="price" placeholder="0" oninput="calculate()">
+            </div>
+        </div>
+        <div class="total-display">
+            CA Généré : <span id="displayRevenue">0.00</span> €
+        </div>
     </div>
 
-    <div class="input-group">
-        <label for="adSpend">2. Budget Média / Achat d'espace (€)</label>
-        <input type="number" id="adSpend" placeholder="Ex: 1000" oninput="calculateMetrics()">
-        <div class="hint">Uniquement ce qu'on paie à Google/FB/Régie. Sert au ROAS.</div>
-    </div>
-
-    <div class="input-group">
-        <label for="otherCosts">3. Autres Coûts (€)</label>
-        <input type="number" id="otherCosts" placeholder="Ex: 500" oninput="calculateMetrics()">
-        <div class="hint">Frais d'agence, production vidéo, salaires, etc.</div>
-    </div>
-
-    <button onclick="calculateMetrics()">Afficher / Actualiser les Résultats</button>
-
-    <div class="results-container" id="results">
+    <div class="section-title">2. Charges (Détail des Coûts)</div>
+    <div class="card-box costs-list">
         
-        <div class="result-box roas-box">
-            <span class="result-title">Efficacité Média (ROAS)</span>
-            <span class="result-value" id="roasValue">0.00</span>
-            <span class="explanation">Pour 1€ de pub, vous récupérez <span id="roasExplanation">0</span>€ de CA.</span>
+        <div class="cost-item media-row">
+            <div class="cost-label-text">
+                <strong>📢 Budget Média / Achat d'espace</strong><br>
+                <small style="color:#64748b">(Google Ads, Facebook Ads, Affichage...)</small>
+            </div>
+            <input type="number" id="costMedia" placeholder="0 €" oninput="calculate()">
         </div>
 
-        <div class="result-box roi-box" id="roiBox">
-            <span class="result-title">Rentabilité Réelle (ROI)</span>
-            <span class="result-value" id="roiValue">0%</span>
-            <span class="explanation">Bénéfice net : <span id="profitValue">0</span> €</span>
+        <div class="cost-item">
+            <div class="cost-label-text">🎨 Frais de Production (Créa, Vidéo)</div>
+            <input type="number" id="costProd" placeholder="0 €" oninput="calculate()">
         </div>
 
-        <div class="summary" id="summaryText"></div>
+        <div class="cost-item">
+            <div class="cost-label-text">🤝 Honoraires (Agence, Freelance)</div>
+            <input type="number" id="costFees" placeholder="0 €" oninput="calculate()">
+        </div>
+
+        <div class="cost-item">
+            <div class="cost-label-text">📦 Autres (Logistique, Divers)</div>
+            <input type="number" id="costOther" placeholder="0 €" oninput="calculate()">
+        </div>
+
+        <div class="total-display" style="border-top: 1px solid #cbd5e1; color: #ef4444;">
+            Coût Total : <span id="displayTotalCost">0.00</span> €
+        </div>
     </div>
+
+    <div class="results-section">
+        <div class="result-card roas-card">
+            <div class="metric-label">Efficacité Pub (ROAS)</div>
+            <span class="metric-value" id="resRoas">0.00</span>
+            <div class="metric-desc">CA / Budget Média<br>(Sans les frais annexes)</div>
+        </div>
+
+        <div class="result-card roi-card" id="cardRoi">
+            <div class="metric-label">Rentabilité (ROI)</div>
+            <span class="metric-value" id="resRoi">0%</span>
+            <div class="metric-desc">Bénéfice Net : <span id="resProfit">0</span> €</div>
+        </div>
+
+        <div class="global-status" id="statusMessage"></div>
+    </div>
+
 </div>
 
 <script>
-    function calculateMetrics() {
-        // 1. Récupération des valeurs
-        const revenue = parseFloat(document.getElementById('revenue').value);
-        const adSpend = parseFloat(document.getElementById('adSpend').value);
-        const otherCosts = parseFloat(document.getElementById('otherCosts').value);
+    function calculate() {
+        // --- 1. Récupération des Recettes ---
+        const volume = parseFloat(document.getElementById('volume').value) || 0;
+        const price = parseFloat(document.getElementById('price').value) || 0;
+        
+        const revenue = volume * price;
+        
+        // --- 2. Récupération des Charges ---
+        const costMedia = parseFloat(document.getElementById('costMedia').value) || 0;
+        const costProd = parseFloat(document.getElementById('costProd').value) || 0;
+        const costFees = parseFloat(document.getElementById('costFees').value) || 0;
+        const costOther = parseFloat(document.getElementById('costOther').value) || 0;
 
-        // Si tous les champs sont vides, on ne fait rien (pour éviter d'afficher des zéros partout au chargement)
-        if (isNaN(revenue) && isNaN(adSpend) && isNaN(otherCosts)) {
-            return; 
-        }
+        // Le Coût Total est la somme de tout
+        const totalCost = costMedia + costProd + costFees + costOther;
 
-        // On traite les valeurs (si un champ est vide, on le considère comme 0 pour le calcul)
-        const rev = isNaN(revenue) ? 0 : revenue;
-        const ads = isNaN(adSpend) ? 0 : adSpend;
-        const other = isNaN(otherCosts) ? 0 : otherCosts;
+        // --- 3. Affichage des totaux intermédiaires ---
+        document.getElementById('displayRevenue').innerText = revenue.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('displayTotalCost').innerText = totalCost.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
-        // 2. Calculs
-        const totalCost = ads + other;
-        const profit = rev - totalCost;
-
+        // --- 4. Calcul du ROAS (CA / Media Seul) ---
         let roas = 0;
-        if (ads > 0) {
-            roas = rev / ads;
+        if (costMedia > 0) {
+            roas = revenue / costMedia;
         }
 
+        // --- 5. Calcul du ROI ((CA - Total) / Total) ---
         let roi = 0;
+        let profit = revenue - totalCost;
+
         if (totalCost > 0) {
-            roi = ((rev - totalCost) / totalCost) * 100;
+            roi = ((revenue - totalCost) / totalCost) * 100;
         }
 
-        // 3. Affichage
-        document.getElementById('results').style.display = 'block';
+        // --- 6. Mise à jour de l'affichage Résultats ---
+        document.getElementById('resRoas').innerText = roas.toFixed(2);
+        document.getElementById('resRoi').innerText = roi.toFixed(1) + '%';
+        document.getElementById('resProfit').innerText = profit.toLocaleString('fr-FR', {maximumFractionDigits: 0});
 
-        // Update ROAS
-        document.getElementById('roasValue').innerText = roas.toFixed(2);
-        document.getElementById('roasExplanation').innerText = roas.toFixed(2);
+        // Gestion des couleurs ROI
+        const cardRoi = document.getElementById('cardRoi');
+        const statusMsg = document.getElementById('statusMessage');
 
-        // Update ROI
-        document.getElementById('roiValue').innerText = roi.toFixed(2) + '%';
-        document.getElementById('profitValue').innerText = profit.toFixed(2);
-
-        // Update Couleurs et message
-        const roiBox = document.getElementById('roiBox');
-        if (roi < 0) {
-            roiBox.classList.remove('roi-box');
-            roiBox.classList.add('roi-negative');
-            document.getElementById('summaryText').innerText = "⚠️ Attention : L'opération n'est pas rentable.";
-            document.getElementById('summaryText').style.color = "#d35400";
+        if (totalCost === 0 && revenue === 0) {
+            // Reset state
+            statusMsg.style.display = 'none';
+            cardRoi.style.backgroundColor = '#2563eb'; // Bleu par défaut
+        } else if (roi < 0) {
+            // Perte
+            cardRoi.style.backgroundColor = '#ef4444'; // Rouge
+            statusMsg.style.display = 'block';
+            statusMsg.style.backgroundColor = '#fecaca';
+            statusMsg.style.color = '#991b1b';
+            statusMsg.innerText = "⚠️ Attention : Campagne à perte (" + profit.toLocaleString('fr-FR') + " €)";
         } else {
-            roiBox.classList.remove('roi-negative');
-            roiBox.classList.add('roi-box');
-            document.getElementById('summaryText').innerText = "✅ Bravo : L'opération est rentable.";
-            document.getElementById('summaryText').style.color = "#27ae60";
+            // Profit
+            cardRoi.style.backgroundColor = '#10b981'; // Vert
+            statusMsg.style.display = 'block';
+            statusMsg.style.backgroundColor = '#d1fae5';
+            statusMsg.style.color = '#065f46';
+            statusMsg.innerText = "✅ Bravo : Campagne rentable (+" + profit.toLocaleString('fr-FR') + " €)";
         }
     }
 </script>
