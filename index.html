@@ -48,13 +48,18 @@
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 1rem;
-            box-sizing: border-box; /* Important pour le padding */
+            box-sizing: border-box; 
             transition: border-color 0.3s;
         }
         input[type="number"]:focus {
             border-color: #3498db;
             outline: none;
         }
+        /* Style spécifique pour montrer que c'est interactif */
+        input[type="number"]:active {
+            background-color: #fafdff;
+        }
+
         button {
             width: 100%;
             padding: 15px;
@@ -66,6 +71,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-bottom: 1rem;
         }
         button:hover {
             background-color: #2980b9;
@@ -73,16 +79,24 @@
         
         /* Résultats */
         .results-container {
-            margin-top: 2rem;
+            margin-top: 1rem;
             display: none; /* Caché par défaut */
             border-top: 2px solid #f0f2f5;
             padding-top: 1.5rem;
+            animation: fadeIn 0.5s;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .result-box {
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 1rem;
             text-align: center;
+            transition: all 0.3s ease;
         }
         .roas-box {
             background-color: #e8f6f3;
@@ -130,23 +144,23 @@
 
     <div class="input-group">
         <label for="revenue">1. Chiffre d'Affaires (CA) généré (€)</label>
-        <input type="number" id="revenue" placeholder="Ex: 5000">
+        <input type="number" id="revenue" placeholder="Ex: 5000" oninput="calculateMetrics()">
         <div class="hint">Volume de ventes x Panier moyen</div>
     </div>
 
     <div class="input-group">
         <label for="adSpend">2. Budget Média / Achat d'espace (€)</label>
-        <input type="number" id="adSpend" placeholder="Ex: 1000">
+        <input type="number" id="adSpend" placeholder="Ex: 1000" oninput="calculateMetrics()">
         <div class="hint">Uniquement ce qu'on paie à Google/FB/Régie. Sert au ROAS.</div>
     </div>
 
     <div class="input-group">
         <label for="otherCosts">3. Autres Coûts (€)</label>
-        <input type="number" id="otherCosts" placeholder="Ex: 500">
+        <input type="number" id="otherCosts" placeholder="Ex: 500" oninput="calculateMetrics()">
         <div class="hint">Frais d'agence, production vidéo, salaires, etc.</div>
     </div>
 
-    <button onclick="calculateMetrics()">Calculer les Résultats</button>
+    <button onclick="calculateMetrics()">Afficher / Actualiser les Résultats</button>
 
     <div class="results-container" id="results">
         
@@ -169,38 +183,46 @@
 <script>
     function calculateMetrics() {
         // 1. Récupération des valeurs
-        const revenue = parseFloat(document.getElementById('revenue').value) || 0;
-        const adSpend = parseFloat(document.getElementById('adSpend').value) || 0;
-        const otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
+        const revenue = parseFloat(document.getElementById('revenue').value);
+        const adSpend = parseFloat(document.getElementById('adSpend').value);
+        const otherCosts = parseFloat(document.getElementById('otherCosts').value);
 
-        // 2. Calculs intermédiaires
-        const totalCost = adSpend + otherCosts;
-        const profit = revenue - totalCost;
-
-        // 3. Calcul du ROAS (CA / Dépenses Pubs)
-        let roas = 0;
-        if (adSpend > 0) {
-            roas = revenue / adSpend;
+        // Si tous les champs sont vides, on ne fait rien (pour éviter d'afficher des zéros partout au chargement)
+        if (isNaN(revenue) && isNaN(adSpend) && isNaN(otherCosts)) {
+            return; 
         }
 
-        // 4. Calcul du ROI ((CA - Coût Total) / Coût Total) * 100
+        // On traite les valeurs (si un champ est vide, on le considère comme 0 pour le calcul)
+        const rev = isNaN(revenue) ? 0 : revenue;
+        const ads = isNaN(adSpend) ? 0 : adSpend;
+        const other = isNaN(otherCosts) ? 0 : otherCosts;
+
+        // 2. Calculs
+        const totalCost = ads + other;
+        const profit = rev - totalCost;
+
+        let roas = 0;
+        if (ads > 0) {
+            roas = rev / ads;
+        }
+
         let roi = 0;
         if (totalCost > 0) {
-            roi = ((revenue - totalCost) / totalCost) * 100;
+            roi = ((rev - totalCost) / totalCost) * 100;
         }
 
-        // 5. Affichage des résultats
+        // 3. Affichage
         document.getElementById('results').style.display = 'block';
 
-        // Mise à jour ROAS
+        // Update ROAS
         document.getElementById('roasValue').innerText = roas.toFixed(2);
         document.getElementById('roasExplanation').innerText = roas.toFixed(2);
 
-        // Mise à jour ROI
+        // Update ROI
         document.getElementById('roiValue').innerText = roi.toFixed(2) + '%';
         document.getElementById('profitValue').innerText = profit.toFixed(2);
 
-        // Gestion des couleurs pour le ROI (Vert si positif, Orange/Rouge si négatif)
+        // Update Couleurs et message
         const roiBox = document.getElementById('roiBox');
         if (roi < 0) {
             roiBox.classList.remove('roi-box');
