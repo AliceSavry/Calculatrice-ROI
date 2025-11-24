@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculatrice ROI & ROAS - BTS Com</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .calculator-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #34495e;
+        }
+        .hint {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 0.2rem;
+            font-style: italic;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Important pour le padding */
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Résultats */
+        .results-container {
+            margin-top: 2rem;
+            display: none; /* Caché par défaut */
+            border-top: 2px solid #f0f2f5;
+            padding-top: 1.5rem;
+        }
+        .result-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .roas-box {
+            background-color: #e8f6f3;
+            border: 1px solid #a2d9ce;
+            color: #16a085;
+        }
+        .roi-box {
+            background-color: #ebf5fb;
+            border: 1px solid #a9cce3;
+            color: #2980b9;
+        }
+        .roi-negative {
+            background-color: #fdebd0;
+            border: 1px solid #f5cba7;
+            color: #d35400;
+        }
+        .result-title {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .result-value {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+        }
+        .summary {
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <h2>💰 Calculatrice Rentabilité</h2>
+
+    <div class="input-group">
+        <label for="revenue">1. Chiffre d'Affaires (CA) généré (€)</label>
+        <input type="number" id="revenue" placeholder="Ex: 5000">
+        <div class="hint">Volume de ventes x Panier moyen</div>
+    </div>
+
+    <div class="input-group">
+        <label for="adSpend">2. Budget Média / Achat d'espace (€)</label>
+        <input type="number" id="adSpend" placeholder="Ex: 1000">
+        <div class="hint">Uniquement ce qu'on paie à Google/FB/Régie. Sert au ROAS.</div>
+    </div>
+
+    <div class="input-group">
+        <label for="otherCosts">3. Autres Coûts (€)</label>
+        <input type="number" id="otherCosts" placeholder="Ex: 500">
+        <div class="hint">Frais d'agence, production vidéo, salaires, etc.</div>
+    </div>
+
+    <button onclick="calculateMetrics()">Calculer les Résultats</button>
+
+    <div class="results-container" id="results">
+        
+        <div class="result-box roas-box">
+            <span class="result-title">Efficacité Média (ROAS)</span>
+            <span class="result-value" id="roasValue">0.00</span>
+            <span class="explanation">Pour 1€ de pub, vous récupérez <span id="roasExplanation">0</span>€ de CA.</span>
+        </div>
+
+        <div class="result-box roi-box" id="roiBox">
+            <span class="result-title">Rentabilité Réelle (ROI)</span>
+            <span class="result-value" id="roiValue">0%</span>
+            <span class="explanation">Bénéfice net : <span id="profitValue">0</span> €</span>
+        </div>
+
+        <div class="summary" id="summaryText"></div>
+    </div>
+</div>
+
+<script>
+    function calculateMetrics() {
+        // 1. Récupération des valeurs
+        const revenue = parseFloat(document.getElementById('revenue').value) || 0;
+        const adSpend = parseFloat(document.getElementById('adSpend').value) || 0;
+        const otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
+
+        // 2. Calculs intermédiaires
+        const totalCost = adSpend + otherCosts;
+        const profit = revenue - totalCost;
+
+        // 3. Calcul du ROAS (CA / Dépenses Pubs)
+        let roas = 0;
+        if (adSpend > 0) {
+            roas = revenue / adSpend;
+        }
+
+        // 4. Calcul du ROI ((CA - Coût Total) / Coût Total) * 100
+        let roi = 0;
+        if (totalCost > 0) {
+            roi = ((revenue - totalCost) / totalCost) * 100;
+        }
+
+        // 5. Affichage des résultats
+        document.getElementById('results').style.display = 'block';
+
+        // Mise à jour ROAS
+        document.getElementById('roasValue').innerText = roas.toFixed(2);
+        document.getElementById('roasExplanation').innerText = roas.toFixed(2);
+
+        // Mise à jour ROI
+        document.getElementById('roiValue').innerText = roi.toFixed(2) + '%';
+        document.getElementById('profitValue').innerText = profit.toFixed(2);
+
+        // Gestion des couleurs pour le ROI (Vert si positif, Orange/Rouge si négatif)
+        const roiBox = document.getElementById('roiBox');
+        if (roi < 0) {
+            roiBox.classList.remove('roi-box');
+            roiBox.classList.add('roi-negative');
+            document.getElementById('summaryText').innerText = "⚠️ Attention : L'opération n'est pas rentable.";
+            document.getElementById('summaryText').style.color = "#d35400";
+        } else {
+            roiBox.classList.remove('roi-negative');
+            roiBox.classList.add('roi-box');
+            document.getElementById('summaryText').innerText = "✅ Bravo : L'opération est rentable.";
+            document.getElementById('summaryText').style.color = "#27ae60";
+        }
+    }
+</script>
+
+</body>
+</html>
