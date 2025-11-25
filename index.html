@@ -13,8 +13,8 @@
             --primary: #2563eb;
             --bg: #f1f5f9;
             --card-bg: #ffffff;
-            --text: #1e293b;
-            --border: #cbd5e1;
+            --text: #000000; /* Texte noir par défaut */
+            --border: #94a3b8; /* Bordures plus foncées */
             --success-bg: #dcfce7;
             --success-text: #166534;
             --danger-bg: #fee2e2;
@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif; /* Police standard plus nette */
             background-color: var(--bg);
             color: var(--text);
             display: flex;
@@ -32,6 +32,7 @@
             padding: 20px;
             margin: 0;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased; /* Rendu plus net */
         }
 
         .main-container {
@@ -48,7 +49,7 @@
         .tabs-header {
             display: flex;
             background-color: #e2e8f0;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px solid var(--border);
         }
 
         .tab-btn {
@@ -58,16 +59,17 @@
             background: none;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             color: #64748b;
             transition: all 0.3s;
         }
 
-        .tab-btn:hover { background-color: #cbd5e1; color: #334155; }
+        .tab-btn:hover { background-color: #cbd5e1; color: #000000; }
         .tab-btn.active {
             background-color: var(--card-bg);
             color: var(--primary);
-            border-bottom: 3px solid var(--primary);
+            border-bottom: 4px solid var(--primary);
+            color: #000000;
         }
 
         /* --- CONTENU --- */
@@ -78,15 +80,16 @@
         h2 {
             margin-top: 0;
             color: var(--primary);
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             margin-bottom: 1.5rem;
             text-align: center;
+            font-weight: 800;
         }
 
-        /* --- INPUTS --- */
+        /* --- INPUTS OPTIMISÉS POUR LECTURE --- */
         .input-group { margin-bottom: 1.25rem; }
-        label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
-        .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; font-style: italic; }
+        label { display: block; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem; color: #000000; }
+        .hint { font-size: 0.8rem; color: #475569; margin-top: 4px; font-style: italic; }
 
         input[type="number"] {
             width: 100%;
@@ -95,12 +98,16 @@
             border-radius: 8px;
             font-size: 1.1rem;
             box-sizing: border-box;
-            background: white; 
-            color: #000000 !important; /* Pour PDF */
-            font-weight: 600 !important;
+            background: #ffffff;
+            
+            /* LE FIX POUR LE PDF : FORCER LE NOIR PUR */
+            color: #000000 !important;
+            font-weight: 700 !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #000000 !important; /* Crucial pour Chrome/Safari */
         }
 
-        input[type="number"]:focus { outline: none; border-color: var(--primary); }
+        input[type="number"]:focus { outline: none; border-color: var(--primary); background-color: #f8fafc; }
 
         /* --- GRILLES & LISTES --- */
         .revenue-grid {
@@ -113,7 +120,7 @@
             border-radius: 12px;
             border: 1px solid var(--border);
         }
-        .operator { font-weight: bold; color: #94a3b8; font-size: 1.2rem; text-align: center; padding-top: 1.5rem; }
+        .operator { font-weight: 900; color: #64748b; font-size: 1.4rem; text-align: center; padding-top: 1.5rem; }
 
         .costs-list {
             background: #f8fafc;
@@ -123,22 +130,22 @@
             display: grid;
             gap: 10px;
         }
-        .cost-item { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center; font-size: 0.9rem; }
-        .media-highlight input { border-color: #93c5fd; background-color: #eff6ff; }
+        .cost-item { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center; font-size: 0.9rem; font-weight: 600; }
+        .media-highlight input { border-color: #3b82f6; background-color: #eff6ff; }
 
         /* --- RÉSULTATS --- */
-        .results-wrapper { margin-top: 2rem; border-top: 2px dashed var(--border); padding-top: 1.5rem; }
+        .results-wrapper { margin-top: 2rem; border-top: 2px dashed #000000; padding-top: 1.5rem; }
         .result-cards-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         
-        .res-card { padding: 1rem; border-radius: 10px; text-align: center; color: white; }
-        .bg-roas { background-color: #0f172a; }
-        .bg-roi { background-color: var(--primary); }
+        .res-card { padding: 1rem; border-radius: 10px; text-align: center; color: white; border: 1px solid #000000; }
+        .bg-roas { background-color: #0f172a; color: white !important; -webkit-text-fill-color: white !important; }
+        .bg-roi { background-color: var(--primary); color: white !important; -webkit-text-fill-color: white !important;}
         
-        .res-val { font-size: 1.8rem; font-weight: 800; display: block; margin: 5px 0; }
-        .res-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
-        .res-desc { font-size: 0.8rem; opacity: 0.9; }
+        .res-val { font-size: 1.8rem; font-weight: 900; display: block; margin: 5px 0; }
+        .res-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.9; font-weight: bold; }
+        .res-desc { font-size: 0.8rem; opacity: 1; font-weight: 600; }
 
-        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold; display: none; }
+        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold; display: none; border: 1px solid currentColor; }
         .status-profit { background: var(--success-bg); color: var(--success-text); }
         .status-loss { background: var(--danger-bg); color: var(--danger-text); }
 
@@ -155,7 +162,7 @@
         
         button.btn-export {
             background-color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
@@ -164,6 +171,7 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .btn-pdf { border: 2px solid var(--pdf-color); color: var(--pdf-color); }
@@ -171,6 +179,22 @@
 
         .btn-excel { border: 2px solid var(--excel-color); color: var(--excel-color); }
         .btn-excel:hover { background-color: var(--excel-color); color: white; }
+
+        /* --- MODE IMPRESSION (Classe ajoutée dynamiquement) --- */
+        .print-mode {
+            border-radius: 0;
+            box-shadow: none;
+            max-width: 800px; /* Plus large pour le PDF */
+        }
+        .print-mode input {
+            border: 1px solid #000000 !important;
+            color: #000000 !important;
+        }
+        .print-mode .res-card {
+            color: #ffffff !important; /* Garder le texte blanc sur fond coloré */
+            -webkit-print-color-adjust: exact; /* Forcer l'impression des couleurs de fond */
+            print-color-adjust: exact;
+        }
 
     </style>
 </head>
@@ -185,8 +209,8 @@
 
     <div id="simple" class="tab-content active">
         <h2>Calcul Rapide</h2>
-        <p style="text-align:center; font-size:0.9rem; color:#64748b; margin-bottom:20px;">
-            Idéal si vous connaissez déjà le CA total et les coûts globaux.
+        <p style="text-align:center; font-size:0.9rem; color:#000000; margin-bottom:20px;">
+            Saisie directe des montants globaux.
         </p>
 
         <div class="input-group">
@@ -224,8 +248,8 @@
 
     <div id="detailed" class="tab-content">
         <h2>Calcul Détaillé</h2>
-        <p style="text-align:center; font-size:0.9rem; color:#64748b; margin-bottom:20px;">
-            Pour construire son budget ligne par ligne.
+        <p style="text-align:center; font-size:0.9rem; color:#000000; margin-bottom:20px;">
+            Construction du budget ligne par ligne.
         </p>
 
         <label>1. Recettes (Volume x Prix)</label>
@@ -240,7 +264,7 @@
                 <input type="number" id="d_price" placeholder="0" oninput="calcDetail()">
             </div>
         </div>
-        <div style="text-align:right; font-weight:bold; color:var(--primary); margin: 5px 0 20px 0;">
+        <div style="text-align:right; font-weight:bold; color:var(--primary); margin: 5px 0 20px 0; font-size: 1.1rem;">
             CA Total : <span id="d_displayRev">0</span> €
         </div>
 
@@ -263,7 +287,7 @@
                 <input type="number" id="d_other" placeholder="0 €" oninput="calcDetail()">
             </div>
         </div>
-        <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top: 5px;">
+        <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top: 5px; font-size: 1.1rem;">
             Coût Total : <span id="d_displayCost">0</span> €
         </div>
 
@@ -373,21 +397,31 @@
     // --- EXPORT PDF ---
     function downloadPDF() {
         const element = document.getElementById('printableArea');
-        document.querySelectorAll('input').forEach(input => { input.setAttribute('value', input.value); });
         
+        // Mode Impression ON (Pour forcer le contraste)
+        element.classList.add('print-mode');
+        
+        // Forcer les valeurs dans le DOM
+        document.querySelectorAll('input').forEach(input => {
+            input.setAttribute('value', input.value);
+        });
+
         const opt = {
-            margin:       0.5,
-            filename:     'Calcul_ROI.pdf',
+            margin:       0.3,
+            filename:     'Resultats_Campagne_ROI.pdf',
             image:        { type: 'jpeg', quality: 1 },
-            html2canvas:  { scale: 2, useCORS: true }, 
+            html2canvas:  { scale: 2, useCORS: true, logging: false }, 
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
-        html2pdf().set(opt).from(element).save();
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            // Mode Impression OFF après sauvegarde
+            element.classList.remove('print-mode');
+        });
     }
 
     // --- EXPORT EXCEL ---
     function downloadExcel() {
-        // 1. Récupération des Données "Simple"
         const s_rev = document.getElementById('s_revenue').value || 0;
         const s_media = document.getElementById('s_media').value || 0;
         const s_other = document.getElementById('s_other').value || 0;
@@ -395,54 +429,42 @@
         const s_roi = document.getElementById('s_resRoi').innerText;
         const s_profit = document.getElementById('s_resProfit').innerText;
 
-        // 2. Récupération des Données "Détaillé"
         const d_vol = document.getElementById('d_vol').value || 0;
         const d_price = document.getElementById('d_price').value || 0;
         const d_rev = document.getElementById('d_displayRev').innerText;
-        
         const d_media = document.getElementById('d_media').value || 0;
         const d_prod = document.getElementById('d_prod').value || 0;
         const d_fees = document.getElementById('d_fees').value || 0;
         const d_other = document.getElementById('d_other').value || 0;
         const d_total_cost = document.getElementById('d_displayCost').innerText;
-
         const d_roas = document.getElementById('d_resRoas').innerText;
         const d_roi = document.getElementById('d_resRoi').innerText;
         const d_profit = document.getElementById('d_resProfit').innerText;
 
-        // 3. Construction du Tableau Excel
         const data = [
-            ["RAPPORT DE RENTABILITÉ (ROI & ROAS)"],
+            ["RAPPORT DE RENTABILITÉ"],
             [""],
-            ["--- MODE SIMPLE ---"],
+            ["MODE SIMPLE"],
             ["Chiffre d'Affaires", s_rev + " €"],
             ["Budget Média", s_media + " €"],
             ["Autres Coûts", s_other + " €"],
+            ["ROAS", s_roas],
+            ["ROI", s_roi],
+            ["Bénéfice", s_profit + " €"],
             [""],
-            ["RÉSULTATS (Simple)"],
-            ["ROAS (Efficacité Pub)", s_roas],
-            ["ROI (Rentabilité)", s_roi],
-            ["Bénéfice Net", s_profit + " €"],
-            [""],
-            [""],
-            ["--- MODE DÉTAILLÉ ---"],
-            ["Volume de ventes", d_vol],
-            ["Panier Moyen", d_price + " €"],
-            ["CA Total Calculé", d_rev + " €"],
-            [""],
-            ["Budget Média", d_media + " €"],
-            ["Production", d_prod + " €"],
+            ["MODE DÉTAILLÉ"],
+            ["Volume x Prix", d_vol + " x " + d_price + " €"],
+            ["CA Total", d_rev + " €"],
+            ["Dépenses Média", d_media + " €"],
+            ["Dépenses Prod", d_prod + " €"],
             ["Honoraires", d_fees + " €"],
             ["Autres", d_other + " €"],
             ["Coût Total", d_total_cost + " €"],
-            [""],
-            ["RÉSULTATS (Détaillé)"],
             ["ROAS", d_roas],
             ["ROI", d_roi],
-            ["Bénéfice Net", d_profit + " €"]
+            ["Bénéfice", d_profit + " €"]
         ];
 
-        // 4. Création du fichier
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(data);
         XLSX.utils.book_append_sheet(wb, ws, "Resultats");
