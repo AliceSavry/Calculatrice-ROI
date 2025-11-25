@@ -39,7 +39,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            padding-bottom: 20px; /* Espace pour le bouton export */
+            padding-bottom: 20px;
         }
 
         /* --- STYLES DES ONGLETS --- */
@@ -61,11 +61,7 @@
             transition: all 0.3s;
         }
 
-        .tab-btn:hover {
-            background-color: #cbd5e1;
-            color: #334155;
-        }
-
+        .tab-btn:hover { background-color: #cbd5e1; color: #334155; }
         .tab-btn.active {
             background-color: var(--card-bg);
             color: var(--primary);
@@ -73,20 +69,9 @@
         }
 
         /* --- CONTENU --- */
-        .tab-content {
-            display: none;
-            padding: 2rem;
-            animation: fadeIn 0.4s;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .tab-content { display: none; padding: 2rem; animation: fadeIn 0.4s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         h2 {
             margin-top: 0;
@@ -96,38 +81,28 @@
             text-align: center;
         }
 
-        /* --- INPUTS --- */
+        /* --- INPUTS (CORRECTION CONTRASTE PDF) --- */
         .input-group { margin-bottom: 1.25rem; }
         
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .hint {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 4px;
-            font-style: italic;
-        }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; font-style: italic; }
 
         input[type="number"] {
             width: 100%;
             padding: 12px;
             border: 2px solid var(--border);
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.1rem; /* Texte plus gros */
             box-sizing: border-box;
-            transition: border-color 0.2s;
-            background: white; /* Important pour PDF */
+            background: white; 
+            
+            /* FORCER LE NOIR POUR L'IMPRESSION */
+            color: #000000 !important; 
+            font-weight: 600 !important;
+            -webkit-text-fill-color: #000000 !important; /* Fix pour certains navigateurs */
         }
 
-        input[type="number"]:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        input[type="number"]:focus { outline: none; border-color: var(--primary); }
 
         /* --- GRILLES & LISTES --- */
         .revenue-grid {
@@ -140,7 +115,6 @@
             border-radius: 12px;
             border: 1px solid var(--border);
         }
-        
         .operator { font-weight: bold; color: #94a3b8; font-size: 1.2rem; text-align: center; padding-top: 1.5rem; }
 
         .costs-list {
@@ -151,60 +125,26 @@
             display: grid;
             gap: 10px;
         }
-
-        .cost-item {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 10px;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        .media-highlight input {
-            border-color: #93c5fd;
-            background-color: #eff6ff;
-        }
+        .cost-item { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center; font-size: 0.9rem; }
+        .media-highlight input { border-color: #93c5fd; background-color: #eff6ff; }
 
         /* --- RÉSULTATS --- */
-        .results-wrapper {
-            margin-top: 2rem;
-            border-top: 2px dashed var(--border);
-            padding-top: 1.5rem;
-        }
-
-        .result-cards-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .res-card {
-            padding: 1rem;
-            border-radius: 10px;
-            text-align: center;
-            color: white;
-        }
-
+        .results-wrapper { margin-top: 2rem; border-top: 2px dashed var(--border); padding-top: 1.5rem; }
+        .result-cards-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        
+        .res-card { padding: 1rem; border-radius: 10px; text-align: center; color: white; }
         .bg-roas { background-color: #0f172a; }
-        .bg-roi { background-color: var(--primary); transition: background-color 0.3s; }
-
+        .bg-roi { background-color: var(--primary); }
+        
         .res-val { font-size: 1.8rem; font-weight: 800; display: block; margin: 5px 0; }
         .res-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
         .res-desc { font-size: 0.8rem; opacity: 0.9; }
 
-        .status-msg {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            display: none;
-        }
-        
+        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold; display: none; }
         .status-profit { background: var(--success-bg); color: var(--success-text); }
         .status-loss { background: var(--danger-bg); color: var(--danger-text); }
 
-        /* --- BOUTON EXPORT PDF --- */
+        /* --- BOUTON EXPORT --- */
         .export-section {
             text-align: center;
             margin-top: 20px;
@@ -213,33 +153,20 @@
             padding-left: 2rem;
             padding-right: 2rem;
         }
-
         .btn-pdf {
-            background-color: white;
-            border: 2px solid var(--pdf-color);
-            color: var(--pdf-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
+            background-color: white; border: 2px solid var(--pdf-color); color: var(--pdf-color);
+            padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;
+            font-size: 1rem; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
         }
-
-        .btn-pdf:hover {
-            background-color: var(--pdf-color);
-            color: white;
-        }
+        .btn-pdf:hover { background-color: var(--pdf-color); color: white; }
 
     </style>
 </head>
 <body>
 
 <div class="main-container" id="printableArea">
-    <div class="tabs-header">
+    
+    <div class="tabs-header" data-html2canvas-ignore="true">
         <button class="tab-btn active" onclick="openTab('simple', this)">1. Version Simple</button>
         <button class="tab-btn" onclick="openTab('detailed', this)">2. Version Détaillée</button>
     </div>
@@ -353,7 +280,7 @@
 </div>
 
 <script>
-    // --- GESTION DES ONGLETS ---
+    // --- ONGLETS ---
     function openTab(tabName, btnElement) {
         var contents = document.getElementsByClassName("tab-content");
         for (var i = 0; i < contents.length; i++) {
@@ -369,7 +296,7 @@
         btnElement.classList.add("active");
     }
 
-    // --- LOGIQUE SIMPLE ---
+    // --- CALCULS ---
     function calcSimple() {
         const rev = parseFloat(document.getElementById('s_revenue').value) || 0;
         const media = parseFloat(document.getElementById('s_media').value) || 0;
@@ -382,12 +309,10 @@
         updateUI('s_', rev, media, totalCost);
     }
 
-    // --- LOGIQUE DÉTAILLÉE ---
     function calcDetail() {
         const vol = parseFloat(document.getElementById('d_vol').value) || 0;
         const price = parseFloat(document.getElementById('d_price').value) || 0;
         const rev = vol * price;
-
         const media = parseFloat(document.getElementById('d_media').value) || 0;
         const prod = parseFloat(document.getElementById('d_prod').value) || 0;
         const fees = parseFloat(document.getElementById('d_fees').value) || 0;
@@ -398,12 +323,10 @@
         document.getElementById('d_displayCost').innerText = totalCost.toLocaleString('fr-FR');
 
         if(rev===0 && totalCost===0) { document.getElementById('d_results').style.display='none'; return; }
-
         document.getElementById('d_results').style.display='block';
         updateUI('d_', rev, media, totalCost);
     }
 
-    // --- FONCTION DE CALCUL ET D'AFFICHAGE COMMUNE ---
     function updateUI(prefix, revenue, mediaCost, totalCost) {
         let roas = 0;
         if(mediaCost > 0) roas = revenue / mediaCost;
@@ -432,25 +355,23 @@
         }
     }
 
-    // --- LOGIQUE EXPORT PDF ---
+    // --- EXPORT PDF ---
     function downloadPDF() {
         const element = document.getElementById('printableArea');
         
-        // Astuce : On force l'affichage des valeurs saisies dans le HTML pour que le PDF les voit
+        // On force les valeurs dans les attributs HTML pour que html2canvas les voit bien
         document.querySelectorAll('input').forEach(input => {
             input.setAttribute('value', input.value);
         });
 
-        // Options du PDF
         const opt = {
             margin:       0.5,
             filename:     'Calcul_ROI_Resultats.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 }, // Meilleure qualité
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2, useCORS: true }, 
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        // Génération
         html2pdf().set(opt).from(element).save();
     }
 </script>
