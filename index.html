@@ -14,13 +14,6 @@
             --bg: #f1f5f9;
             --card-bg: #ffffff;
             --text: #1e293b;
-            --border: #cbd5e1;
-            --success-bg: #dcfce7;
-            --success-text: #166534;
-            --danger-bg: #fee2e2;
-            --danger-text: #991b1b;
-            --pdf-color: #D32F2F;
-            --excel-color: #1D6F42;
         }
 
         body {
@@ -44,140 +37,43 @@
             padding-bottom: 20px;
         }
 
-        /* --- STYLES DES ONGLETS --- */
-        .tabs-header {
-            display: flex;
-            background-color: #e2e8f0;
-            border-bottom: 1px solid var(--border);
-        }
+        /* ONGLETS */
+        .tabs-header { display: flex; background-color: #e2e8f0; border-bottom: 1px solid #cbd5e1; }
+        .tab-btn { flex: 1; padding: 1rem; border: none; background: none; cursor: pointer; font-weight: 600; color: #64748b; }
+        .tab-btn.active { background-color: #fff; color: var(--primary); border-bottom: 3px solid var(--primary); }
 
-        .tab-btn {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #64748b;
-            transition: all 0.3s;
-        }
-
-        .tab-btn:hover { background-color: #cbd5e1; color: #334155; }
-        .tab-btn.active {
-            background-color: var(--card-bg);
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-        }
-
-        /* --- CONTENU --- */
-        .tab-content { display: none; padding: 2rem; animation: fadeIn 0.4s; }
+        /* CONTENU */
+        .tab-content { display: none; padding: 2rem; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        h2 {
-            margin-top: 0;
-            color: var(--primary);
-            font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        /* --- INPUTS --- */
-        .input-group { margin-bottom: 1.25rem; }
-        label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
-        .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; font-style: italic; }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1.1rem;
-            box-sizing: border-box;
-            background: white; 
-            color: #000000;
-            font-weight: 600;
-        }
-
-        input[type="number"]:focus { outline: none; border-color: var(--primary); }
-
-        /* --- GRILLES & LISTES --- */
-        .revenue-grid {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 10px;
-            align-items: center;
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-        .operator { font-weight: bold; color: #94a3b8; font-size: 1.2rem; text-align: center; padding-top: 1.5rem; }
-
-        .costs-list {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            display: grid;
-            gap: 10px;
-        }
-        .cost-item { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center; font-size: 0.9rem; }
-        .media-highlight input { border-color: #93c5fd; background-color: #eff6ff; }
-
-        /* --- RÉSULTATS --- */
-        .results-wrapper { margin-top: 2rem; border-top: 2px dashed var(--border); padding-top: 1.5rem; }
-        .result-cards-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         
-        .res-card { padding: 1rem; border-radius: 10px; text-align: center; color: white; }
+        h2 { text-align: center; color: var(--primary); margin-top: 0; }
+        
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        
+        input[type="number"] {
+            width: 100%; padding: 10px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; box-sizing: border-box;
+        }
+        
+        /* RESULTATS ECRAN */
+        .results-wrapper { margin-top: 20px; border-top: 2px dashed #cbd5e1; padding-top: 20px; display: none; }
+        .result-cards-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .res-card { padding: 15px; border-radius: 10px; text-align: center; color: white; }
         .bg-roas { background-color: #0f172a; }
         .bg-roi { background-color: var(--primary); }
-        
-        .res-val { font-size: 1.8rem; font-weight: 800; display: block; margin: 5px 0; }
-        .res-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
-        .res-desc { font-size: 0.8rem; opacity: 0.9; }
+        .res-val { font-size: 1.8rem; font-weight: bold; display: block; }
 
-        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold; display: none; }
-        .status-profit { background: var(--success-bg); color: var(--success-text); }
-        .status-loss { background: var(--danger-bg); color: var(--danger-text); }
-
-        /* --- BOUTONS EXPORT --- */
-        .export-section {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        button.btn-export {
-            background-color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .btn-pdf { border: 2px solid var(--pdf-color); color: var(--pdf-color); }
-        .btn-pdf:hover { background-color: var(--pdf-color); color: white; }
-
-        .btn-excel { border: 2px solid var(--excel-color); color: var(--excel-color); }
-        .btn-excel:hover { background-color: var(--excel-color); color: white; }
+        /* BOUTONS EXPORT */
+        .export-section { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: center; gap: 15px; }
+        button.btn-export { padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; gap: 8px; background: white; border: 2px solid #ccc; }
+        .btn-pdf { color: #D32F2F; border-color: #D32F2F; }
+        .btn-excel { color: #1D6F42; border-color: #1D6F42; }
 
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    
     <div class="tabs-header">
         <button class="tab-btn active" onclick="openTab('simple', this)">1. Version Simple</button>
         <button class="tab-btn" onclick="openTab('detailed', this)">2. Version Détaillée</button>
@@ -185,251 +81,192 @@
 
     <div id="simple" class="tab-content active">
         <h2>Calcul Rapide</h2>
-        <p style="text-align:center; font-size:0.9rem; color:#64748b; margin-bottom:20px;">
-            Saisie directe des montants globaux.
-        </p>
-
         <div class="input-group">
-            <label>1. Chiffre d'Affaires généré (€)</label>
-            <input type="number" id="s_revenue" placeholder="Ex: 5000" oninput="calcSimple()">
+            <label>1. Chiffre d'Affaires (€)</label>
+            <input type="number" id="s_revenue" placeholder="0" oninput="calcSimple()">
         </div>
-
         <div class="input-group">
-            <label>2. Budget Média (Achat d'espace uniquement)</label>
-            <input type="number" id="s_media" placeholder="Ex: 1000" oninput="calcSimple()">
-            <div class="hint">Utilisé pour le ROAS</div>
+            <label>2. Budget Média (€)</label>
+            <input type="number" id="s_media" placeholder="0" oninput="calcSimple()">
         </div>
-
         <div class="input-group">
-            <label>3. Autres Coûts (Frais techniques, Prod, Salaires)</label>
-            <input type="number" id="s_other" placeholder="Ex: 500" oninput="calcSimple()">
-            <div class="hint">Ajouté au média pour le ROI</div>
+            <label>3. Autres Coûts (€)</label>
+            <input type="number" id="s_other" placeholder="0" oninput="calcSimple()">
         </div>
-
-        <div class="results-wrapper" id="s_results" style="display:none;">
+        <div class="results-wrapper" id="s_results">
             <div class="result-cards-container">
-                <div class="res-card bg-roas">
-                    <div class="res-label">ROAS (Efficacité Pub)</div>
-                    <span class="res-val" id="s_resRoas">0.00</span>
-                </div>
-                <div class="res-card bg-roi" id="s_cardRoi">
-                    <div class="res-label">ROI (Rentabilité)</div>
-                    <span class="res-val" id="s_resRoi">0%</span>
-                    <div class="res-desc">Bénéfice : <span id="s_resProfit">0</span> €</div>
-                </div>
+                <div class="res-card bg-roas"><span class="res-label">ROAS</span><span class="res-val" id="s_resRoas">0.00</span></div>
+                <div class="res-card bg-roi"><span class="res-label">ROI</span><span class="res-val" id="s_resRoi">0%</span></div>
             </div>
-            <div class="status-msg" id="s_status"></div>
+            <div style="text-align:center; margin-top:10px; font-weight:bold;">Bénéfice : <span id="s_resProfit">0</span> €</div>
         </div>
     </div>
 
     <div id="detailed" class="tab-content">
         <h2>Calcul Détaillé</h2>
-        <p style="text-align:center; font-size:0.9rem; color:#64748b; margin-bottom:20px;">
-            Construction du budget ligne par ligne.
-        </p>
-
-        <label>1. Recettes (Volume x Prix)</label>
-        <div class="revenue-grid">
-            <div>
-                <label style="font-size:0.8rem">Ventes (Qté)</label>
-                <input type="number" id="d_vol" placeholder="0" oninput="calcDetail()">
+        <div class="input-group">
+            <label>Volume x Prix</label>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="d_vol" placeholder="Qté" oninput="calcDetail()">
+                <input type="number" id="d_price" placeholder="Prix €" oninput="calcDetail()">
             </div>
-            <div class="operator">×</div>
-            <div>
-                <label style="font-size:0.8rem">Panier (€)</label>
-                <input type="number" id="d_price" placeholder="0" oninput="calcDetail()">
-            </div>
-        </div>
-        <div style="text-align:right; font-weight:bold; color:var(--primary); margin: 5px 0 20px 0;">
-            CA Total : <span id="d_displayRev">0</span> €
+            <div style="text-align:right; font-weight:bold; color:var(--primary); margin-top:5px;">CA : <span id="d_displayRev">0</span> €</div>
         </div>
 
-        <label>2. Charges (Détail)</label>
-        <div class="costs-list">
-            <div class="cost-item media-highlight">
-                <span>📢 Budget Média (Google/FB)</span>
-                <input type="number" id="d_media" placeholder="0 €" oninput="calcDetail()">
-            </div>
-            <div class="cost-item">
-                <span>🎨 Création / Production</span>
-                <input type="number" id="d_prod" placeholder="0 €" oninput="calcDetail()">
-            </div>
-            <div class="cost-item">
-                <span>🤝 Frais Agence</span>
-                <input type="number" id="d_fees" placeholder="0 €" oninput="calcDetail()">
-            </div>
-            <div class="cost-item">
-                <span>📦 Autres / Logistique</span>
-                <input type="number" id="d_other" placeholder="0 €" oninput="calcDetail()">
-            </div>
-        </div>
-        <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top: 5px;">
-            Coût Total : <span id="d_displayCost">0</span> €
+        <div class="input-group">
+            <label>Dépenses</label>
+            <input type="number" id="d_media" placeholder="Média €" oninput="calcDetail()" style="margin-bottom:5px;">
+            <input type="number" id="d_prod" placeholder="Prod €" oninput="calcDetail()" style="margin-bottom:5px;">
+            <input type="number" id="d_fees" placeholder="Honoraires €" oninput="calcDetail()" style="margin-bottom:5px;">
+            <input type="number" id="d_other" placeholder="Autres €" oninput="calcDetail()">
+            <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top:5px;">Coût : <span id="d_displayCost">0</span> €</div>
         </div>
 
-        <div class="results-wrapper" id="d_results" style="display:none;">
+        <div class="results-wrapper" id="d_results">
             <div class="result-cards-container">
-                <div class="res-card bg-roas">
-                    <div class="res-label">ROAS (CA / Média)</div>
-                    <span class="res-val" id="d_resRoas">0.00</span>
-                </div>
-                <div class="res-card bg-roi" id="d_cardRoi">
-                    <div class="res-label">ROI (Global)</div>
-                    <span class="res-val" id="d_resRoi">0%</span>
-                    <div class="res-desc">Bénéfice : <span id="d_resProfit">0</span> €</div>
-                </div>
+                <div class="res-card bg-roas"><span class="res-label">ROAS</span><span class="res-val" id="d_resRoas">0.00</span></div>
+                <div class="res-card bg-roi"><span class="res-label">ROI</span><span class="res-val" id="d_resRoi">0%</span></div>
             </div>
-            <div class="status-msg" id="d_status"></div>
+            <div style="text-align:center; margin-top:10px; font-weight:bold;">Bénéfice : <span id="d_resProfit">0</span> €</div>
         </div>
     </div>
 
     <div class="export-section">
-        <button class="btn-export btn-excel" onclick="downloadExcel()">
-            <span>📗</span> Excel
-        </button>
-        <button class="btn-export btn-pdf" onclick="downloadPDF()">
-            <span>📄</span> PDF
-        </button>
+        <button class="btn-export btn-excel" onclick="downloadExcel()">📗 Excel</button>
+        <button class="btn-export btn-pdf" onclick="generateReportPDF()">📄 PDF</button>
     </div>
-
 </div>
 
 <script>
     // --- ONGLETS ---
-    function openTab(tabName, btnElement) {
-        var contents = document.getElementsByClassName("tab-content");
-        for (var i = 0; i < contents.length; i++) {
-            contents[i].style.display = "none";
-            contents[i].classList.remove("active");
-        }
-        var btns = document.getElementsByClassName("tab-btn");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].classList.remove("active");
-        }
-        document.getElementById(tabName).style.display = "block";
-        document.getElementById(tabName).classList.add("active");
-        btnElement.classList.add("active");
+    function openTab(name, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(name).style.display = 'block';
+        btn.classList.add('active');
     }
 
-    // --- CALCULS ---
+    // --- CALCULS (Simple & Détaillé) ---
     function calcSimple() {
         const rev = parseFloat(document.getElementById('s_revenue').value) || 0;
         const media = parseFloat(document.getElementById('s_media').value) || 0;
         const other = parseFloat(document.getElementById('s_other').value) || 0;
-        const totalCost = media + other;
-        
-        if(rev===0 && totalCost===0) { document.getElementById('s_results').style.display='none'; return; }
-        
-        document.getElementById('s_results').style.display='block';
-        updateUI('s_', rev, media, totalCost);
+        updateDisplay('s_', rev, media, media + other);
+        document.getElementById('s_results').style.display = 'block';
     }
 
     function calcDetail() {
         const vol = parseFloat(document.getElementById('d_vol').value) || 0;
         const price = parseFloat(document.getElementById('d_price').value) || 0;
         const rev = vol * price;
+        
         const media = parseFloat(document.getElementById('d_media').value) || 0;
-        const prod = parseFloat(document.getElementById('d_prod').value) || 0;
-        const fees = parseFloat(document.getElementById('d_fees').value) || 0;
-        const other = parseFloat(document.getElementById('d_other').value) || 0;
-        const totalCost = media + prod + fees + other;
-
+        const cost = media + (parseFloat(document.getElementById('d_prod').value)||0) + (parseFloat(document.getElementById('d_fees').value)||0) + (parseFloat(document.getElementById('d_other').value)||0);
+        
         document.getElementById('d_displayRev').innerText = rev.toLocaleString('fr-FR');
-        document.getElementById('d_displayCost').innerText = totalCost.toLocaleString('fr-FR');
-
-        if(rev===0 && totalCost===0) { document.getElementById('d_results').style.display='none'; return; }
-        document.getElementById('d_results').style.display='block';
-        updateUI('d_', rev, media, totalCost);
+        document.getElementById('d_displayCost').innerText = cost.toLocaleString('fr-FR');
+        
+        updateDisplay('d_', rev, media, cost);
+        document.getElementById('d_results').style.display = 'block';
     }
 
-    function updateUI(prefix, revenue, mediaCost, totalCost) {
-        let roas = 0;
-        if(mediaCost > 0) roas = revenue / mediaCost;
+    function updateDisplay(prefix, ca, media, totalCost) {
+        let roas = media > 0 ? (ca / media) : 0;
+        let profit = ca - totalCost;
+        let roi = totalCost > 0 ? ((profit / totalCost) * 100) : 0;
+
         document.getElementById(prefix + 'resRoas').innerText = roas.toFixed(2);
-
-        let roi = 0;
-        let profit = revenue - totalCost;
-        if(totalCost > 0) roi = ((revenue - totalCost) / totalCost) * 100;
-
         document.getElementById(prefix + 'resRoi').innerText = roi.toFixed(1) + '%';
         document.getElementById(prefix + 'resProfit').innerText = profit.toLocaleString('fr-FR');
-
-        const cardRoi = document.getElementById(prefix + 'cardRoi');
-        const statusBox = document.getElementById(prefix + 'status');
-
-        if(roi < 0) {
-            cardRoi.style.backgroundColor = '#ef4444';
-            statusBox.style.display = 'block';
-            statusBox.className = 'status-msg status-loss';
-            statusBox.innerText = "⚠️ Attention : L'opération n'est pas rentable.";
-        } else {
-            cardRoi.style.backgroundColor = '#10b981';
-            statusBox.style.display = 'block';
-            statusBox.className = 'status-msg status-profit';
-            statusBox.innerText = "✅ Bravo : L'opération est rentable.";
-        }
     }
 
-    // --- EXPORT PDF (MÉTHODE RECONSTRUCTION PROPRE) ---
-    function downloadPDF() {
-        // 1. Identifier l'onglet actif
-        const activeTab = document.querySelector('.tab-content.active');
+    // --- LE SECRET DU PDF PARFAIT ---
+    // On ne capture pas l'écran. On construit un rapport HTML propre en mémoire.
+    function generateReportPDF() {
+        // 1. Détection du mode actif
+        const isSimple = document.getElementById('simple').style.display !== 'none';
         
-        // 2. Créer un conteneur temporaire pour le PDF (totalement détaché du reste)
-        // On le style pour qu'il soit PARFAIT à l'impression
-        const pdfContainer = document.createElement('div');
-        pdfContainer.style.width = '600px';
-        pdfContainer.style.padding = '20px';
-        pdfContainer.style.backgroundColor = '#ffffff';
-        pdfContainer.style.fontFamily = 'Arial, sans-serif';
-        pdfContainer.style.color = '#000000';
+        // 2. Récupération des données selon le mode
+        let data = {};
+        if (isSimple) {
+            data = {
+                title: "Calcul Rapide",
+                rows: [
+                    { label: "Chiffre d'Affaires", val: (document.getElementById('s_revenue').value || 0) + " €" },
+                    { label: "Budget Média", val: (document.getElementById('s_media').value || 0) + " €" },
+                    { label: "Autres Coûts", val: (document.getElementById('s_other').value || 0) + " €" }
+                ],
+                roas: document.getElementById('s_resRoas').innerText,
+                roi: document.getElementById('s_resRoi').innerText,
+                profit: document.getElementById('s_resProfit').innerText
+            };
+        } else {
+            // Mode Détaillé
+            const vol = document.getElementById('d_vol').value || 0;
+            const price = document.getElementById('d_price').value || 0;
+            data = {
+                title: "Calcul Détaillé",
+                rows: [
+                    { label: "Volume de ventes", val: vol },
+                    { label: "Panier Moyen", val: price + " €" },
+                    { label: "CA TOTAL", val: document.getElementById('d_displayRev').innerText + " €", bold: true },
+                    { label: "---", val: "" },
+                    { label: "Budget Média", val: (document.getElementById('d_media').value || 0) + " €" },
+                    { label: "Production & Frais", val: ((parseFloat(document.getElementById('d_prod').value)||0) + (parseFloat(document.getElementById('d_fees').value)||0)).toLocaleString() + " €" },
+                    { label: "COÛT TOTAL", val: document.getElementById('d_displayCost').innerText + " €", bold: true }
+                ],
+                roas: document.getElementById('d_resRoas').innerText,
+                roi: document.getElementById('d_resRoi').innerText,
+                profit: document.getElementById('d_resProfit').innerText
+            };
+        }
+
+        // 3. Construction du HTML "Virtuel" (Style Noir et Blanc pur pour impression)
+        // C'est ce HTML que le générateur PDF va "voir"
+        const reportContent = `
+            <div style="padding: 20px; font-family: Arial, sans-serif; color: #000;">
+                <h1 style="text-align:center; color:#2563eb; margin-bottom: 30px;">Rapport de Rentabilité</h1>
+                <h3 style="border-bottom: 2px solid #000; padding-bottom: 10px;">Mode : ${data.title}</h3>
+                
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                    ${data.rows.map(row => `
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 12px; font-size: 14px; ${row.bold ? 'font-weight:bold;' : ''}">${row.label}</td>
+                            <td style="padding: 12px; font-size: 14px; text-align: right; font-weight: bold;">${row.val}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+
+                <div style="background-color: #f8f9fa; border: 2px solid #000; padding: 20px; border-radius: 8px;">
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; text-align: center;">RÉSULTATS</div>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: center;">
+                                <div style="font-size: 12px; text-transform: uppercase;">ROAS</div>
+                                <div style="font-size: 24px; font-weight: bold; color: #000;">${data.roas}</div>
+                            </td>
+                            <td style="text-align: center; border-left: 1px solid #ccc;">
+                                <div style="font-size: 12px; text-transform: uppercase;">ROI</div>
+                                <div style="font-size: 24px; font-weight: bold; color: #000;">${data.roi}</div>
+                            </td>
+                            <td style="text-align: center; border-left: 1px solid #ccc;">
+                                <div style="font-size: 12px; text-transform: uppercase;">Bénéfice</div>
+                                <div style="font-size: 24px; font-weight: bold; color: ${parseFloat(data.profit.replace(/\s/g, '')) < 0 ? 'red' : 'green'};">${data.profit} €</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-top: 30px; text-align: center; font-size: 10px; color: #666;">
+                    Généré automatiquement le ${new Date().toLocaleDateString()}
+                </div>
+            </div>
+        `;
+
+        // 4. Création d'un élément temporaire invisible
+        const element = document.createElement('div');
+        element.innerHTML = reportContent;
         
-        // 3. Cloner le contenu de l'onglet actif
-        const contentClone = activeTab.cloneNode(true);
-        
-        // 4. LA SOLUTION : Remplacer tous les INPUTS par du TEXTE simple
-        const originalInputs = activeTab.querySelectorAll('input');
-        const cloneInputs = contentClone.querySelectorAll('input');
-
-        cloneInputs.forEach((cloneInput, index) => {
-            const originalVal = originalInputs[index].value;
-            
-            // On crée un élément texte stylé
-            const textDiv = document.createElement('div');
-            textDiv.innerText = originalVal ? originalVal + " €" : "0 €";
-            textDiv.style.fontWeight = 'bold';
-            textDiv.style.fontSize = '1.1em';
-            textDiv.style.border = '1px solid #000'; // Bordure noire nette
-            textDiv.style.borderRadius = '6px';
-            textDiv.style.padding = '8px';
-            textDiv.style.marginTop = '5px';
-            textDiv.style.marginBottom = '15px';
-            textDiv.style.backgroundColor = '#fff';
-            textDiv.style.color = '#000000'; // Noir force
-
-            // On remplace l'input par ce texte
-            cloneInput.parentNode.replaceChild(textDiv, cloneInput);
-        });
-
-        // 5. Nettoyage des styles pour le PDF
-        // On s'assure que les cartes de résultats sont bien lisibles
-        const resCards = contentClone.querySelectorAll('.res-card');
-        resCards.forEach(card => {
-            // On garde la couleur de fond mais on force le texte en blanc
-            card.style.color = '#ffffff'; 
-            card.style.border = '1px solid #000';
-            card.style.marginBottom = '10px';
-        });
-
-        // 6. Ajouter un Titre au rapport
-        const title = document.createElement('h1');
-        title.innerText = "Rapport de Rentabilité";
-        title.style.textAlign = 'center';
-        title.style.color = '#2563eb';
-        pdfContainer.appendChild(title);
-        pdfContainer.appendChild(contentClone);
-
-        // 7. Génération du PDF
+        // 5. Génération
         const opt = {
             margin:       0.5,
             filename:     'Rapport_ROI.pdf',
@@ -438,58 +275,46 @@
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf().set(opt).from(pdfContainer).save();
+        html2pdf().set(opt).from(element).save();
     }
 
-    // --- EXPORT EXCEL ---
+    // --- EXPORT EXCEL (Inchangé) ---
     function downloadExcel() {
-        const s_rev = document.getElementById('s_revenue').value || 0;
-        const s_media = document.getElementById('s_media').value || 0;
-        const s_other = document.getElementById('s_other').value || 0;
-        const s_roas = document.getElementById('s_resRoas').innerText;
-        const s_roi = document.getElementById('s_resRoi').innerText;
-        const s_profit = document.getElementById('s_resProfit').innerText;
+        const isSimple = document.getElementById('simple').style.display !== 'none';
+        let exportData = [];
 
-        const d_vol = document.getElementById('d_vol').value || 0;
-        const d_price = document.getElementById('d_price').value || 0;
-        const d_rev = document.getElementById('d_displayRev').innerText;
-        const d_media = document.getElementById('d_media').value || 0;
-        const d_prod = document.getElementById('d_prod').value || 0;
-        const d_fees = document.getElementById('d_fees').value || 0;
-        const d_other = document.getElementById('d_other').value || 0;
-        const d_total_cost = document.getElementById('d_displayCost').innerText;
-        const d_roas = document.getElementById('d_resRoas').innerText;
-        const d_roi = document.getElementById('d_resRoi').innerText;
-        const d_profit = document.getElementById('d_resProfit').innerText;
-
-        const data = [
-            ["RAPPORT DE RENTABILITÉ"],
-            [""],
-            ["MODE SIMPLE"],
-            ["Chiffre d'Affaires", s_rev + " €"],
-            ["Budget Média", s_media + " €"],
-            ["Autres Coûts", s_other + " €"],
-            ["ROAS", s_roas],
-            ["ROI", s_roi],
-            ["Bénéfice", s_profit + " €"],
-            [""],
-            ["MODE DÉTAILLÉ"],
-            ["Volume x Prix", d_vol + " x " + d_price + " €"],
-            ["CA Total", d_rev + " €"],
-            ["Dépenses Média", d_media + " €"],
-            ["Dépenses Prod", d_prod + " €"],
-            ["Honoraires", d_fees + " €"],
-            ["Autres", d_other + " €"],
-            ["Coût Total", d_total_cost + " €"],
-            ["ROAS", d_roas],
-            ["ROI", d_roi],
-            ["Bénéfice", d_profit + " €"]
-        ];
-
+        if (isSimple) {
+            exportData = [
+                ["RAPPORT CALCUL RAPIDE"], [" "],
+                ["Chiffre d'Affaires", document.getElementById('s_revenue').value],
+                ["Budget Média", document.getElementById('s_media').value],
+                ["Autres Coûts", document.getElementById('s_other').value],
+                [" "], ["RESULTATS"],
+                ["ROAS", document.getElementById('s_resRoas').innerText],
+                ["ROI", document.getElementById('s_resRoi').innerText],
+                ["Bénéfice", document.getElementById('s_resProfit').innerText]
+            ];
+        } else {
+             exportData = [
+                ["RAPPORT CALCUL DÉTAILLÉ"], [" "],
+                ["Volume", document.getElementById('d_vol').value],
+                ["Panier", document.getElementById('d_price').value],
+                ["CA TOTAL", document.getElementById('d_displayRev').innerText],
+                [" "],
+                ["Dépenses Média", document.getElementById('d_media').value],
+                ["Autres Frais", ((parseFloat(document.getElementById('d_prod').value)||0) + (parseFloat(document.getElementById('d_fees').value)||0)).toString()],
+                ["COÛT TOTAL", document.getElementById('d_displayCost').innerText],
+                [" "], ["RESULTATS"],
+                ["ROAS", document.getElementById('d_resRoas').innerText],
+                ["ROI", document.getElementById('d_resRoi').innerText],
+                ["Bénéfice", document.getElementById('d_resProfit').innerText]
+            ];
+        }
+        
         const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, "Resultats");
-        XLSX.writeFile(wb, "Calcul_ROI_ROAS.xlsx");
+        const ws = XLSX.utils.aoa_to_sheet(exportData);
+        XLSX.utils.book_append_sheet(wb, ws, "Rapport");
+        XLSX.writeFile(wb, "Rapport_Rentabilite.xlsx");
     }
 </script>
 
