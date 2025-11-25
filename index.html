@@ -114,4 +114,265 @@
         </div>
         <div class="input-group">
             <label>3. Autres Coûts (€)</label>
-            <input type="number" id="s_other" placeholder="0" on
+            <input type="number" id="s_other" placeholder="0" oninput="calcSimple()">
+            <div class="hint">Ajouté au média pour le ROI</div>
+        </div>
+        
+        <div class="results-wrapper" id="s_results">
+            <div class="result-cards-container">
+                <div class="res-card bg-roas"><span class="res-label">ROAS</span><span class="res-val" id="s_resRoas">0.00</span></div>
+                <div class="res-card bg-roi" id="s_cardRoi"><span class="res-label">ROI</span><span class="res-val" id="s_resRoi">0%</span></div>
+            </div>
+            <div class="status-msg" id="s_status"></div>
+            <div style="text-align:center; margin-top:10px; font-weight:bold; color:#666;">Bénéfice Net : <span id="s_resProfit">0</span> €</div>
+        </div>
+    </div>
+
+    <div id="detailed" class="tab-content">
+        <h2>Calcul Détaillé</h2>
+        <div class="input-group">
+            <label>Volume x Prix</label>
+            <div class="revenue-grid">
+                <div><label style="font-size:0.8rem">Qté</label><input type="number" id="d_vol" placeholder="0" oninput="calcDetail()"></div>
+                <div class="operator">×</div>
+                <div><label style="font-size:0.8rem">Prix (€)</label><input type="number" id="d_price" placeholder="0" oninput="calcDetail()"></div>
+            </div>
+            <div style="text-align:right; font-weight:bold; color:var(--primary); margin-top:5px;">CA Total : <span id="d_displayRev">0</span> €</div>
+        </div>
+
+        <div class="input-group">
+            <label>Charges (Détail)</label>
+            <div class="costs-list">
+                <div class="cost-item media-highlight"><span>📢 Budget Média</span><input type="number" id="d_media" placeholder="0" oninput="calcDetail()"></div>
+                <div class="cost-item"><span>🎨 Production</span><input type="number" id="d_prod" placeholder="0" oninput="calcDetail()"></div>
+                <div class="cost-item"><span>🤝 Honoraires</span><input type="number" id="d_fees" placeholder="0" oninput="calcDetail()"></div>
+                <div class="cost-item"><span>📦 Autres</span><input type="number" id="d_other" placeholder="0" oninput="calcDetail()"></div>
+            </div>
+            <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top:5px;">Coût Total : <span id="d_displayCost">0</span> €</div>
+        </div>
+
+        <div class="results-wrapper" id="d_results">
+            <div class="result-cards-container">
+                <div class="res-card bg-roas"><span class="res-label">ROAS</span><span class="res-val" id="d_resRoas">0.00</span></div>
+                <div class="res-card bg-roi" id="d_cardRoi"><span class="res-label">ROI</span><span class="res-val" id="d_resRoi">0%</span></div>
+            </div>
+            <div class="status-msg" id="d_status"></div>
+            <div style="text-align:center; margin-top:10px; font-weight:bold; color:#666;">Bénéfice Net : <span id="d_resProfit">0</span> €</div>
+        </div>
+    </div>
+
+    <div class="export-section">
+        <button class="btn-export btn-excel" onclick="downloadExcel()">📗 Excel</button>
+        <button class="btn-export btn-pdf" onclick="generateReportPDF()">📄 PDF</button>
+    </div>
+</div>
+
+<script>
+    // --- ONGLETS ---
+    function openTab(name, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(name).style.display = 'block';
+        btn.classList.add('active');
+    }
+
+    // --- CALCULS ---
+    function calcSimple() {
+        const rev = parseFloat(document.getElementById('s_revenue').value) || 0;
+        const media = parseFloat(document.getElementById('s_media').value) || 0;
+        const other = parseFloat(document.getElementById('s_other').value) || 0;
+        const totalCost = media + other;
+        updateUI('s_', rev, media, totalCost);
+        document.getElementById('s_results').style.display = 'block';
+    }
+
+    function calcDetail() {
+        const vol = parseFloat(document.getElementById('d_vol').value) || 0;
+        const price = parseFloat(document.getElementById('d_price').value) || 0;
+        const rev = vol * price;
+        const media = parseFloat(document.getElementById('d_media').value) || 0;
+        const cost = media + (parseFloat(document.getElementById('d_prod').value)||0) + (parseFloat(document.getElementById('d_fees').value)||0) + (parseFloat(document.getElementById('d_other').value)||0);
+        
+        document.getElementById('d_displayRev').innerText = rev.toLocaleString('fr-FR');
+        document.getElementById('d_displayCost').innerText = cost.toLocaleString('fr-FR');
+        updateUI('d_', rev, media, cost);
+        document.getElementById('d_results').style.display = 'block';
+    }
+
+    function updateUI(prefix, revenue, mediaCost, totalCost) {
+        let roas = mediaCost > 0 ? (revenue / mediaCost) : 0;
+        let profit = revenue - totalCost;
+        let roi = totalCost > 0 ? ((profit / totalCost) * 100) : 0;
+
+        document.getElementById(prefix + 'resRoas').innerText = roas.toFixed(2);
+        document.getElementById(prefix + 'resRoi').innerText = roi.toFixed(1) + '%';
+        document.getElementById(prefix + 'resProfit').innerText = profit.toLocaleString('fr-FR');
+
+        const statusBox = document.getElementById(prefix + 'status');
+        const cardRoi = document.getElementById(prefix + 'cardRoi');
+        
+        if(roi < 0) {
+            statusBox.style.display = 'block';
+            statusBox.className = 'status-msg status-loss';
+            statusBox.innerText = "⚠️ Opération non rentable";
+            cardRoi.style.backgroundColor = '#ef4444';
+        } else {
+            statusBox.style.display = 'block';
+            statusBox.className = 'status-msg status-profit';
+            statusBox.innerText = "✅ Opération rentable";
+            cardRoi.style.backgroundColor = '#2563eb';
+        }
+    }
+
+    // --- PDF PROPRE (Rapport Virtuel) ---
+    function generateReportPDF() {
+        const isSimple = document.getElementById('simple').style.display !== 'none';
+        let data = {};
+
+        if (isSimple) {
+            data = {
+                title: "Calcul Rapide",
+                rows: [
+                    { label: "Chiffre d'Affaires", val: (document.getElementById('s_revenue').value || 0) + " €" },
+                    { label: "Budget Média", val: (document.getElementById('s_media').value || 0) + " €" },
+                    { label: "Autres Coûts", val: (document.getElementById('s_other').value || 0) + " €" }
+                ],
+                roas: document.getElementById('s_resRoas').innerText,
+                roi: document.getElementById('s_resRoi').innerText,
+                profit: document.getElementById('s_resProfit').innerText
+            };
+        } else {
+            const vol = document.getElementById('d_vol').value || 0;
+            const price = document.getElementById('d_price').value || 0;
+            data = {
+                title: "Calcul Détaillé",
+                rows: [
+                    { label: "Volume de ventes", val: vol },
+                    { label: "Panier Moyen", val: price + " €" },
+                    { label: "CA TOTAL", val: document.getElementById('d_displayRev').innerText + " €", bold: true },
+                    { label: "---", val: "" },
+                    { label: "Budget Média", val: (document.getElementById('d_media').value || 0) + " €" },
+                    { label: "Production & Frais", val: ((parseFloat(document.getElementById('d_prod').value)||0) + (parseFloat(document.getElementById('d_fees').value)||0)).toLocaleString() + " €" },
+                    { label: "COÛT TOTAL", val: document.getElementById('d_displayCost').innerText + " €", bold: true }
+                ],
+                roas: document.getElementById('d_resRoas').innerText,
+                roi: document.getElementById('d_resRoi').innerText,
+                profit: document.getElementById('d_resProfit').innerText
+            };
+        }
+
+        const reportContent = `
+            <div style="padding: 20px; font-family: Arial, sans-serif; color: #000;">
+                <h1 style="text-align:center; color:#2563eb; margin-bottom: 30px;">Rapport de Rentabilité</h1>
+                <h3 style="border-bottom: 2px solid #000; padding-bottom: 10px;">Mode : ${data.title}</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                    ${data.rows.map(row => `
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 12px; font-size: 14px; ${row.bold ? 'font-weight:bold;' : ''}">${row.label}</td>
+                            <td style="padding: 12px; font-size: 14px; text-align: right; font-weight: bold;">${row.val}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+                <div style="background-color: #f8f9fa; border: 2px solid #000; padding: 20px; border-radius: 8px;">
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; text-align: center;">RÉSULTATS</div>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: center;">
+                                <div style="font-size: 12px; text-transform: uppercase;">ROAS</div>
+                                <div style="font-size: 24px; font-weight: bold;">${data.roas}</div>
+                            </td>
+                            <td style="text-align: center; border-left: 1px solid #ccc;">
+                                <div style="font-size: 12px; text-transform: uppercase;">ROI</div>
+                                <div style="font-size: 24px; font-weight: bold;">${data.roi}</div>
+                            </td>
+                            <td style="text-align: center; border-left: 1px solid #ccc;">
+                                <div style="font-size: 12px; text-transform: uppercase;">Bénéfice</div>
+                                <div style="font-size: 24px; font-weight: bold; color: ${parseFloat(data.profit.replace(/\s/g, '')) < 0 ? 'red' : 'green'};">${data.profit} €</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        const element = document.createElement('div');
+        element.innerHTML = reportContent;
+        const opt = { margin: 0.5, filename: 'Rapport_ROI.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    // --- EXCEL DYNAMIQUE (AVEC FORMULES) ---
+    function downloadExcel() {
+        const isSimple = document.getElementById('simple').style.display !== 'none';
+        let data = [];
+        
+        // --- MODE SIMPLE ---
+        if (isSimple) {
+            // Entrées
+            const s_rev = parseFloat(document.getElementById('s_revenue').value) || 0;
+            const s_media = parseFloat(document.getElementById('s_media').value) || 0;
+            const s_other = parseFloat(document.getElementById('s_other').value) || 0;
+
+            data = [
+                ["RAPPORT SIMPLE"],
+                [""],
+                ["Chiffre d'Affaires", { t: 'n', v: s_rev }], // Cell B3
+                ["Budget Média", { t: 'n', v: s_media }],     // Cell B4
+                ["Autres Coûts", { t: 'n', v: s_other }],     // Cell B5
+                [""],
+                // ROAS = CA / Média
+                ["ROAS", { t: 'n', f: "IF(B4>0, B3/B4, 0)" }],
+                // ROI = (CA - (Média+Autre)) / (Média+Autre)
+                ["ROI", { t: 'n', f: "IF((B4+B5)>0, (B3-(B4+B5))/(B4+B5), 0)" }], 
+                // Bénéfice = CA - Coût Total
+                ["Bénéfice Net", { t: 'n', f: "B3-(B4+B5)" }]
+            ];
+        } 
+        // --- MODE DÉTAILLÉ ---
+        else {
+            const d_vol = parseFloat(document.getElementById('d_vol').value) || 0;
+            const d_price = parseFloat(document.getElementById('d_price').value) || 0;
+            
+            const d_media = parseFloat(document.getElementById('d_media').value) || 0;
+            const d_prod = parseFloat(document.getElementById('d_prod').value) || 0;
+            const d_fees = parseFloat(document.getElementById('d_fees').value) || 0;
+            const d_other = parseFloat(document.getElementById('d_other').value) || 0;
+
+            // Décalage des lignes pour les formules (index 1 = ligne 2 Excel)
+            // On écrit à partir de la ligne 2.
+            
+            data = [
+                ["RAPPORT DÉTAILLÉ"],
+                [""],
+                ["Volume de Ventes", { t: 'n', v: d_vol }],   // B3
+                ["Prix Unitaire", { t: 'n', v: d_price }],    // B4
+                ["CA TOTAL", { t: 'n', f: "B3*B4" }],         // B5
+                [""],
+                ["Budget Média", { t: 'n', v: d_media }],     // B7
+                ["Production", { t: 'n', v: d_prod }],        // B8
+                ["Honoraires", { t: 'n', v: d_fees }],        // B9
+                ["Autres", { t: 'n', v: d_other }],           // B10
+                ["COÛT TOTAL", { t: 'n', f: "SUM(B7:B10)" }], // B11
+                [""],
+                // ROAS = CA / Média
+                ["ROAS", { t: 'n', f: "IF(B7>0, B5/B7, 0)" }],
+                // ROI = (CA - TotalCost) / TotalCost
+                ["ROI", { t: 'n', f: "IF(B11>0, (B5-B11)/B11, 0)" }],
+                // Bénéfice
+                ["Bénéfice Net", { t: 'n', f: "B5-B11" }]
+            ];
+        }
+        
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        
+        // Astuce : formater les cellules ROI en pourcentage dans Excel n'est pas possible facilement avec la version "gratuite" de SheetJS
+        // Mais les formules fonctionneront parfaitement.
+        
+        XLSX.utils.book_append_sheet(wb, ws, "Resultats");
+        XLSX.writeFile(wb, "Rapport_Rentabilite.xlsx");
+    }
+</script>
+
+</body>
+</html>
