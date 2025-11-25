@@ -13,8 +13,8 @@
             --primary: #2563eb;
             --bg: #f1f5f9;
             --card-bg: #ffffff;
-            --text: #000000;
-            --border: #94a3b8;
+            --text: #1e293b;
+            --border: #cbd5e1;
             --success-bg: #dcfce7;
             --success-text: #166534;
             --danger-bg: #fee2e2;
@@ -48,7 +48,7 @@
         .tabs-header {
             display: flex;
             background-color: #e2e8f0;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
         .tab-btn {
@@ -58,17 +58,16 @@
             background: none;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 700;
+            font-weight: 600;
             color: #64748b;
             transition: all 0.3s;
         }
 
-        .tab-btn:hover { background-color: #cbd5e1; color: #000000; }
+        .tab-btn:hover { background-color: #cbd5e1; color: #334155; }
         .tab-btn.active {
             background-color: var(--card-bg);
             color: var(--primary);
-            border-bottom: 4px solid var(--primary);
-            color: #000000;
+            border-bottom: 3px solid var(--primary);
         }
 
         /* --- CONTENU --- */
@@ -79,16 +78,15 @@
         h2 {
             margin-top: 0;
             color: var(--primary);
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             margin-bottom: 1.5rem;
             text-align: center;
-            font-weight: 800;
         }
 
         /* --- INPUTS --- */
         .input-group { margin-bottom: 1.25rem; }
-        label { display: block; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem; color: #000000; }
-        .hint { font-size: 0.8rem; color: #475569; margin-top: 4px; font-style: italic; }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; font-style: italic; }
 
         input[type="number"] {
             width: 100%;
@@ -97,12 +95,12 @@
             border-radius: 8px;
             font-size: 1.1rem;
             box-sizing: border-box;
-            background: #ffffff;
+            background: white; 
             color: #000000;
-            font-weight: 700;
+            font-weight: 600;
         }
 
-        input[type="number"]:focus { outline: none; border-color: var(--primary); background-color: #f8fafc; }
+        input[type="number"]:focus { outline: none; border-color: var(--primary); }
 
         /* --- GRILLES & LISTES --- */
         .revenue-grid {
@@ -115,7 +113,7 @@
             border-radius: 12px;
             border: 1px solid var(--border);
         }
-        .operator { font-weight: 900; color: #64748b; font-size: 1.4rem; text-align: center; padding-top: 1.5rem; }
+        .operator { font-weight: bold; color: #94a3b8; font-size: 1.2rem; text-align: center; padding-top: 1.5rem; }
 
         .costs-list {
             background: #f8fafc;
@@ -125,22 +123,22 @@
             display: grid;
             gap: 10px;
         }
-        .cost-item { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center; font-size: 0.9rem; font-weight: 600; }
-        .media-highlight input { border-color: #3b82f6; background-color: #eff6ff; }
+        .cost-item { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: center; font-size: 0.9rem; }
+        .media-highlight input { border-color: #93c5fd; background-color: #eff6ff; }
 
         /* --- RÉSULTATS --- */
-        .results-wrapper { margin-top: 2rem; border-top: 2px dashed #000000; padding-top: 1.5rem; }
+        .results-wrapper { margin-top: 2rem; border-top: 2px dashed var(--border); padding-top: 1.5rem; }
         .result-cards-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         
-        .res-card { padding: 1rem; border-radius: 10px; text-align: center; color: white; border: 1px solid #000000; }
-        .bg-roas { background-color: #0f172a; color: white; }
-        .bg-roi { background-color: var(--primary); color: white; }
+        .res-card { padding: 1rem; border-radius: 10px; text-align: center; color: white; }
+        .bg-roas { background-color: #0f172a; }
+        .bg-roi { background-color: var(--primary); }
         
-        .res-val { font-size: 1.8rem; font-weight: 900; display: block; margin: 5px 0; }
-        .res-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.9; font-weight: bold; }
-        .res-desc { font-size: 0.8rem; opacity: 1; font-weight: 600; }
+        .res-val { font-size: 1.8rem; font-weight: 800; display: block; margin: 5px 0; }
+        .res-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.8; }
+        .res-desc { font-size: 0.8rem; opacity: 0.9; }
 
-        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold; display: none; border: 1px solid currentColor; }
+        .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold; display: none; }
         .status-profit { background: var(--success-bg); color: var(--success-text); }
         .status-loss { background: var(--danger-bg); color: var(--danger-text); }
 
@@ -157,7 +155,7 @@
         
         button.btn-export {
             background-color: white;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
@@ -166,7 +164,6 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .btn-pdf { border: 2px solid var(--pdf-color); color: var(--pdf-color); }
@@ -179,33 +176,33 @@
 </head>
 <body>
 
-<div class="main-container" id="printableArea">
+<div class="main-container">
     
-    <div class="tabs-header" data-html2canvas-ignore="true">
+    <div class="tabs-header">
         <button class="tab-btn active" onclick="openTab('simple', this)">1. Version Simple</button>
         <button class="tab-btn" onclick="openTab('detailed', this)">2. Version Détaillée</button>
     </div>
 
     <div id="simple" class="tab-content active">
         <h2>Calcul Rapide</h2>
-        <p style="text-align:center; font-size:0.9rem; color:#000000; margin-bottom:20px;">
+        <p style="text-align:center; font-size:0.9rem; color:#64748b; margin-bottom:20px;">
             Saisie directe des montants globaux.
         </p>
 
         <div class="input-group">
             <label>1. Chiffre d'Affaires généré (€)</label>
-            <input type="number" id="s_revenue" placeholder="0" oninput="calcSimple()">
+            <input type="number" id="s_revenue" placeholder="Ex: 5000" oninput="calcSimple()">
         </div>
 
         <div class="input-group">
             <label>2. Budget Média (Achat d'espace uniquement)</label>
-            <input type="number" id="s_media" placeholder="0" oninput="calcSimple()">
+            <input type="number" id="s_media" placeholder="Ex: 1000" oninput="calcSimple()">
             <div class="hint">Utilisé pour le ROAS</div>
         </div>
 
         <div class="input-group">
             <label>3. Autres Coûts (Frais techniques, Prod, Salaires)</label>
-            <input type="number" id="s_other" placeholder="0" oninput="calcSimple()">
+            <input type="number" id="s_other" placeholder="Ex: 500" oninput="calcSimple()">
             <div class="hint">Ajouté au média pour le ROI</div>
         </div>
 
@@ -227,7 +224,7 @@
 
     <div id="detailed" class="tab-content">
         <h2>Calcul Détaillé</h2>
-        <p style="text-align:center; font-size:0.9rem; color:#000000; margin-bottom:20px;">
+        <p style="text-align:center; font-size:0.9rem; color:#64748b; margin-bottom:20px;">
             Construction du budget ligne par ligne.
         </p>
 
@@ -243,7 +240,7 @@
                 <input type="number" id="d_price" placeholder="0" oninput="calcDetail()">
             </div>
         </div>
-        <div style="text-align:right; font-weight:bold; color:var(--primary); margin: 5px 0 20px 0; font-size: 1.1rem;">
+        <div style="text-align:right; font-weight:bold; color:var(--primary); margin: 5px 0 20px 0;">
             CA Total : <span id="d_displayRev">0</span> €
         </div>
 
@@ -251,22 +248,22 @@
         <div class="costs-list">
             <div class="cost-item media-highlight">
                 <span>📢 Budget Média (Google/FB)</span>
-                <input type="number" id="d_media" placeholder="0" oninput="calcDetail()">
+                <input type="number" id="d_media" placeholder="0 €" oninput="calcDetail()">
             </div>
             <div class="cost-item">
                 <span>🎨 Création / Production</span>
-                <input type="number" id="d_prod" placeholder="0" oninput="calcDetail()">
+                <input type="number" id="d_prod" placeholder="0 €" oninput="calcDetail()">
             </div>
             <div class="cost-item">
                 <span>🤝 Frais Agence</span>
-                <input type="number" id="d_fees" placeholder="0" oninput="calcDetail()">
+                <input type="number" id="d_fees" placeholder="0 €" oninput="calcDetail()">
             </div>
             <div class="cost-item">
                 <span>📦 Autres / Logistique</span>
-                <input type="number" id="d_other" placeholder="0" oninput="calcDetail()">
+                <input type="number" id="d_other" placeholder="0 €" oninput="calcDetail()">
             </div>
         </div>
-        <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top: 5px; font-size: 1.1rem;">
+        <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top: 5px;">
             Coût Total : <span id="d_displayCost">0</span> €
         </div>
 
@@ -286,7 +283,7 @@
         </div>
     </div>
 
-    <div class="export-section" data-html2canvas-ignore="true">
+    <div class="export-section">
         <button class="btn-export btn-excel" onclick="downloadExcel()">
             <span>📗</span> Excel
         </button>
@@ -373,52 +370,75 @@
         }
     }
 
-    // --- EXPORT PDF (NOUVELLE STRATÉGIE : REMPLACEMENT) ---
+    // --- EXPORT PDF (MÉTHODE RECONSTRUCTION PROPRE) ---
     function downloadPDF() {
-        const element = document.getElementById('printableArea');
+        // 1. Identifier l'onglet actif
+        const activeTab = document.querySelector('.tab-content.active');
         
-        // 1. Cloner l'élément pour ne pas casser l'interface utilisateur
-        const clone = element.cloneNode(true);
+        // 2. Créer un conteneur temporaire pour le PDF (totalement détaché du reste)
+        // On le style pour qu'il soit PARFAIT à l'impression
+        const pdfContainer = document.createElement('div');
+        pdfContainer.style.width = '600px';
+        pdfContainer.style.padding = '20px';
+        pdfContainer.style.backgroundColor = '#ffffff';
+        pdfContainer.style.fontFamily = 'Arial, sans-serif';
+        pdfContainer.style.color = '#000000';
         
-        // 2. Transférer les valeurs des inputs originaux vers le clone
-        const originalInputs = element.querySelectorAll('input');
-        const cloneInputs = clone.querySelectorAll('input');
+        // 3. Cloner le contenu de l'onglet actif
+        const contentClone = activeTab.cloneNode(true);
         
-        // On parcourt chaque input et on le remplace par un DIV TEXTE
-        originalInputs.forEach((orig, index) => {
-            const dest = cloneInputs[index];
-            const val = orig.value;
+        // 4. LA SOLUTION : Remplacer tous les INPUTS par du TEXTE simple
+        const originalInputs = activeTab.querySelectorAll('input');
+        const cloneInputs = contentClone.querySelectorAll('input');
 
-            // Création d'un élément texte "en dur" qui remplace l'input
-            const textDisplay = document.createElement('div');
-            textDisplay.innerText = val ? val + " €" : "0 €"; // Ajout de l'unité
-            textDisplay.style.fontWeight = "900";
-            textDisplay.style.fontSize = "1.1rem";
-            textDisplay.style.color = "#000000"; // Noir pur
-            textDisplay.style.padding = "10px";
-            textDisplay.style.border = "2px solid #000000"; // Bordure noire
-            textDisplay.style.borderRadius = "8px";
-            textDisplay.style.backgroundColor = "#ffffff";
-            textDisplay.style.textAlign = "left";
+        cloneInputs.forEach((cloneInput, index) => {
+            const originalVal = originalInputs[index].value;
+            
+            // On crée un élément texte stylé
+            const textDiv = document.createElement('div');
+            textDiv.innerText = originalVal ? originalVal + " €" : "0 €";
+            textDiv.style.fontWeight = 'bold';
+            textDiv.style.fontSize = '1.1em';
+            textDiv.style.border = '1px solid #000'; // Bordure noire nette
+            textDiv.style.borderRadius = '6px';
+            textDiv.style.padding = '8px';
+            textDiv.style.marginTop = '5px';
+            textDiv.style.marginBottom = '15px';
+            textDiv.style.backgroundColor = '#fff';
+            textDiv.style.color = '#000000'; // Noir force
 
-            // Remplacement physique dans le DOM cloné
-            dest.parentNode.replaceChild(textDisplay, dest);
+            // On remplace l'input par ce texte
+            cloneInput.parentNode.replaceChild(textDiv, cloneInput);
         });
 
-        // 3. Masquer les éléments inutiles dans le clone (Onglets, Boutons)
-        const itemsToHide = clone.querySelectorAll('.tabs-header, .export-section');
-        itemsToHide.forEach(el => el.style.display = 'none');
+        // 5. Nettoyage des styles pour le PDF
+        // On s'assure que les cartes de résultats sont bien lisibles
+        const resCards = contentClone.querySelectorAll('.res-card');
+        resCards.forEach(card => {
+            // On garde la couleur de fond mais on force le texte en blanc
+            card.style.color = '#ffffff'; 
+            card.style.border = '1px solid #000';
+            card.style.marginBottom = '10px';
+        });
 
-        // 4. Générer le PDF à partir du CLONE modifié
+        // 6. Ajouter un Titre au rapport
+        const title = document.createElement('h1');
+        title.innerText = "Rapport de Rentabilité";
+        title.style.textAlign = 'center';
+        title.style.color = '#2563eb';
+        pdfContainer.appendChild(title);
+        pdfContainer.appendChild(contentClone);
+
+        // 7. Génération du PDF
         const opt = {
-            margin:       0.3,
-            filename:     'Calcul_ROI.pdf',
-            image:        { type: 'jpeg', quality: 1 },
+            margin:       0.5,
+            filename:     'Rapport_ROI.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf().set(opt).from(clone).save();
+        html2pdf().set(opt).from(pdfContainer).save();
     }
 
     // --- EXPORT EXCEL ---
