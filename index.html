@@ -13,8 +13,8 @@
             --primary: #2563eb;
             --bg: #f1f5f9;
             --card-bg: #ffffff;
-            --text: #000000; /* Texte noir par défaut */
-            --border: #94a3b8; /* Bordures plus foncées */
+            --text: #000000;
+            --border: #94a3b8;
             --success-bg: #dcfce7;
             --success-text: #166534;
             --danger-bg: #fee2e2;
@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif; /* Police standard plus nette */
+            font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             display: flex;
@@ -32,7 +32,6 @@
             padding: 20px;
             margin: 0;
             min-height: 100vh;
-            -webkit-font-smoothing: antialiased; /* Rendu plus net */
         }
 
         .main-container {
@@ -86,7 +85,7 @@
             font-weight: 800;
         }
 
-        /* --- INPUTS OPTIMISÉS POUR LECTURE --- */
+        /* --- INPUTS --- */
         .input-group { margin-bottom: 1.25rem; }
         label { display: block; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem; color: #000000; }
         .hint { font-size: 0.8rem; color: #475569; margin-top: 4px; font-style: italic; }
@@ -99,12 +98,8 @@
             font-size: 1.1rem;
             box-sizing: border-box;
             background: #ffffff;
-            
-            /* LE FIX POUR LE PDF : FORCER LE NOIR PUR */
-            color: #000000 !important;
-            font-weight: 700 !important;
-            opacity: 1 !important;
-            -webkit-text-fill-color: #000000 !important; /* Crucial pour Chrome/Safari */
+            color: #000000;
+            font-weight: 700;
         }
 
         input[type="number"]:focus { outline: none; border-color: var(--primary); background-color: #f8fafc; }
@@ -138,8 +133,8 @@
         .result-cards-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         
         .res-card { padding: 1rem; border-radius: 10px; text-align: center; color: white; border: 1px solid #000000; }
-        .bg-roas { background-color: #0f172a; color: white !important; -webkit-text-fill-color: white !important; }
-        .bg-roi { background-color: var(--primary); color: white !important; -webkit-text-fill-color: white !important;}
+        .bg-roas { background-color: #0f172a; color: white; }
+        .bg-roi { background-color: var(--primary); color: white; }
         
         .res-val { font-size: 1.8rem; font-weight: 900; display: block; margin: 5px 0; }
         .res-label { font-size: 0.75rem; text-transform: uppercase; opacity: 0.9; font-weight: bold; }
@@ -180,22 +175,6 @@
         .btn-excel { border: 2px solid var(--excel-color); color: var(--excel-color); }
         .btn-excel:hover { background-color: var(--excel-color); color: white; }
 
-        /* --- MODE IMPRESSION (Classe ajoutée dynamiquement) --- */
-        .print-mode {
-            border-radius: 0;
-            box-shadow: none;
-            max-width: 800px; /* Plus large pour le PDF */
-        }
-        .print-mode input {
-            border: 1px solid #000000 !important;
-            color: #000000 !important;
-        }
-        .print-mode .res-card {
-            color: #ffffff !important; /* Garder le texte blanc sur fond coloré */
-            -webkit-print-color-adjust: exact; /* Forcer l'impression des couleurs de fond */
-            print-color-adjust: exact;
-        }
-
     </style>
 </head>
 <body>
@@ -215,18 +194,18 @@
 
         <div class="input-group">
             <label>1. Chiffre d'Affaires généré (€)</label>
-            <input type="number" id="s_revenue" placeholder="Ex: 5000" oninput="calcSimple()">
+            <input type="number" id="s_revenue" placeholder="0" oninput="calcSimple()">
         </div>
 
         <div class="input-group">
             <label>2. Budget Média (Achat d'espace uniquement)</label>
-            <input type="number" id="s_media" placeholder="Ex: 1000" oninput="calcSimple()">
+            <input type="number" id="s_media" placeholder="0" oninput="calcSimple()">
             <div class="hint">Utilisé pour le ROAS</div>
         </div>
 
         <div class="input-group">
             <label>3. Autres Coûts (Frais techniques, Prod, Salaires)</label>
-            <input type="number" id="s_other" placeholder="Ex: 500" oninput="calcSimple()">
+            <input type="number" id="s_other" placeholder="0" oninput="calcSimple()">
             <div class="hint">Ajouté au média pour le ROI</div>
         </div>
 
@@ -272,19 +251,19 @@
         <div class="costs-list">
             <div class="cost-item media-highlight">
                 <span>📢 Budget Média (Google/FB)</span>
-                <input type="number" id="d_media" placeholder="0 €" oninput="calcDetail()">
+                <input type="number" id="d_media" placeholder="0" oninput="calcDetail()">
             </div>
             <div class="cost-item">
                 <span>🎨 Création / Production</span>
-                <input type="number" id="d_prod" placeholder="0 €" oninput="calcDetail()">
+                <input type="number" id="d_prod" placeholder="0" oninput="calcDetail()">
             </div>
             <div class="cost-item">
                 <span>🤝 Frais Agence</span>
-                <input type="number" id="d_fees" placeholder="0 €" oninput="calcDetail()">
+                <input type="number" id="d_fees" placeholder="0" oninput="calcDetail()">
             </div>
             <div class="cost-item">
                 <span>📦 Autres / Logistique</span>
-                <input type="number" id="d_other" placeholder="0 €" oninput="calcDetail()">
+                <input type="number" id="d_other" placeholder="0" oninput="calcDetail()">
             </div>
         </div>
         <div style="text-align:right; font-weight:bold; color:#ef4444; margin-top: 5px; font-size: 1.1rem;">
@@ -394,30 +373,52 @@
         }
     }
 
-    // --- EXPORT PDF ---
+    // --- EXPORT PDF (NOUVELLE STRATÉGIE : REMPLACEMENT) ---
     function downloadPDF() {
         const element = document.getElementById('printableArea');
         
-        // Mode Impression ON (Pour forcer le contraste)
-        element.classList.add('print-mode');
+        // 1. Cloner l'élément pour ne pas casser l'interface utilisateur
+        const clone = element.cloneNode(true);
         
-        // Forcer les valeurs dans le DOM
-        document.querySelectorAll('input').forEach(input => {
-            input.setAttribute('value', input.value);
+        // 2. Transférer les valeurs des inputs originaux vers le clone
+        const originalInputs = element.querySelectorAll('input');
+        const cloneInputs = clone.querySelectorAll('input');
+        
+        // On parcourt chaque input et on le remplace par un DIV TEXTE
+        originalInputs.forEach((orig, index) => {
+            const dest = cloneInputs[index];
+            const val = orig.value;
+
+            // Création d'un élément texte "en dur" qui remplace l'input
+            const textDisplay = document.createElement('div');
+            textDisplay.innerText = val ? val + " €" : "0 €"; // Ajout de l'unité
+            textDisplay.style.fontWeight = "900";
+            textDisplay.style.fontSize = "1.1rem";
+            textDisplay.style.color = "#000000"; // Noir pur
+            textDisplay.style.padding = "10px";
+            textDisplay.style.border = "2px solid #000000"; // Bordure noire
+            textDisplay.style.borderRadius = "8px";
+            textDisplay.style.backgroundColor = "#ffffff";
+            textDisplay.style.textAlign = "left";
+
+            // Remplacement physique dans le DOM cloné
+            dest.parentNode.replaceChild(textDisplay, dest);
         });
 
+        // 3. Masquer les éléments inutiles dans le clone (Onglets, Boutons)
+        const itemsToHide = clone.querySelectorAll('.tabs-header, .export-section');
+        itemsToHide.forEach(el => el.style.display = 'none');
+
+        // 4. Générer le PDF à partir du CLONE modifié
         const opt = {
             margin:       0.3,
-            filename:     'Resultats_Campagne_ROI.pdf',
+            filename:     'Calcul_ROI.pdf',
             image:        { type: 'jpeg', quality: 1 },
-            html2canvas:  { scale: 2, useCORS: true, logging: false }, 
+            html2canvas:  { scale: 2 },
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf().set(opt).from(element).save().then(() => {
-            // Mode Impression OFF après sauvegarde
-            element.classList.remove('print-mode');
-        });
+        html2pdf().set(opt).from(clone).save();
     }
 
     // --- EXPORT EXCEL ---
