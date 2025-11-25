@@ -6,6 +6,7 @@
     <title>Outil Calcul ROI & ROAS - BTS Com</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
     <style>
         :root {
@@ -19,6 +20,7 @@
             --danger-bg: #fee2e2;
             --danger-text: #991b1b;
             --pdf-color: #D32F2F;
+            --excel-color: #1D6F42;
         }
 
         body {
@@ -81,9 +83,8 @@
             text-align: center;
         }
 
-        /* --- INPUTS (CORRECTION CONTRASTE PDF) --- */
+        /* --- INPUTS --- */
         .input-group { margin-bottom: 1.25rem; }
-        
         label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
         .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; font-style: italic; }
 
@@ -92,14 +93,11 @@
             padding: 12px;
             border: 2px solid var(--border);
             border-radius: 8px;
-            font-size: 1.1rem; /* Texte plus gros */
+            font-size: 1.1rem;
             box-sizing: border-box;
             background: white; 
-            
-            /* FORCER LE NOIR POUR L'IMPRESSION */
-            color: #000000 !important; 
+            color: #000000 !important; /* Pour PDF */
             font-weight: 600 !important;
-            -webkit-text-fill-color: #000000 !important; /* Fix pour certains navigateurs */
         }
 
         input[type="number"]:focus { outline: none; border-color: var(--primary); }
@@ -144,21 +142,35 @@
         .status-profit { background: var(--success-bg); color: var(--success-text); }
         .status-loss { background: var(--danger-bg); color: var(--danger-text); }
 
-        /* --- BOUTON EXPORT --- */
+        /* --- BOUTONS EXPORT --- */
         .export-section {
             text-align: center;
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
-            padding-left: 2rem;
-            padding-right: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
-        .btn-pdf {
-            background-color: white; border: 2px solid var(--pdf-color); color: var(--pdf-color);
-            padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;
-            font-size: 1rem; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
+        
+        button.btn-export {
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
         }
+
+        .btn-pdf { border: 2px solid var(--pdf-color); color: var(--pdf-color); }
         .btn-pdf:hover { background-color: var(--pdf-color); color: white; }
+
+        .btn-excel { border: 2px solid var(--excel-color); color: var(--excel-color); }
+        .btn-excel:hover { background-color: var(--excel-color); color: white; }
 
     </style>
 </head>
@@ -272,8 +284,11 @@
     </div>
 
     <div class="export-section" data-html2canvas-ignore="true">
-        <button class="btn-pdf" onclick="downloadPDF()">
-            <span>📄</span> Exporter en PDF
+        <button class="btn-export btn-excel" onclick="downloadExcel()">
+            <span>📗</span> Excel
+        </button>
+        <button class="btn-export btn-pdf" onclick="downloadPDF()">
+            <span>📄</span> PDF
         </button>
     </div>
 
@@ -358,21 +373,80 @@
     // --- EXPORT PDF ---
     function downloadPDF() {
         const element = document.getElementById('printableArea');
+        document.querySelectorAll('input').forEach(input => { input.setAttribute('value', input.value); });
         
-        // On force les valeurs dans les attributs HTML pour que html2canvas les voit bien
-        document.querySelectorAll('input').forEach(input => {
-            input.setAttribute('value', input.value);
-        });
-
         const opt = {
             margin:       0.5,
-            filename:     'Calcul_ROI_Resultats.pdf',
+            filename:     'Calcul_ROI.pdf',
             image:        { type: 'jpeg', quality: 1 },
             html2canvas:  { scale: 2, useCORS: true }, 
             jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
-
         html2pdf().set(opt).from(element).save();
+    }
+
+    // --- EXPORT EXCEL ---
+    function downloadExcel() {
+        // 1. Récupération des Données "Simple"
+        const s_rev = document.getElementById('s_revenue').value || 0;
+        const s_media = document.getElementById('s_media').value || 0;
+        const s_other = document.getElementById('s_other').value || 0;
+        const s_roas = document.getElementById('s_resRoas').innerText;
+        const s_roi = document.getElementById('s_resRoi').innerText;
+        const s_profit = document.getElementById('s_resProfit').innerText;
+
+        // 2. Récupération des Données "Détaillé"
+        const d_vol = document.getElementById('d_vol').value || 0;
+        const d_price = document.getElementById('d_price').value || 0;
+        const d_rev = document.getElementById('d_displayRev').innerText;
+        
+        const d_media = document.getElementById('d_media').value || 0;
+        const d_prod = document.getElementById('d_prod').value || 0;
+        const d_fees = document.getElementById('d_fees').value || 0;
+        const d_other = document.getElementById('d_other').value || 0;
+        const d_total_cost = document.getElementById('d_displayCost').innerText;
+
+        const d_roas = document.getElementById('d_resRoas').innerText;
+        const d_roi = document.getElementById('d_resRoi').innerText;
+        const d_profit = document.getElementById('d_resProfit').innerText;
+
+        // 3. Construction du Tableau Excel
+        const data = [
+            ["RAPPORT DE RENTABILITÉ (ROI & ROAS)"],
+            [""],
+            ["--- MODE SIMPLE ---"],
+            ["Chiffre d'Affaires", s_rev + " €"],
+            ["Budget Média", s_media + " €"],
+            ["Autres Coûts", s_other + " €"],
+            [""],
+            ["RÉSULTATS (Simple)"],
+            ["ROAS (Efficacité Pub)", s_roas],
+            ["ROI (Rentabilité)", s_roi],
+            ["Bénéfice Net", s_profit + " €"],
+            [""],
+            [""],
+            ["--- MODE DÉTAILLÉ ---"],
+            ["Volume de ventes", d_vol],
+            ["Panier Moyen", d_price + " €"],
+            ["CA Total Calculé", d_rev + " €"],
+            [""],
+            ["Budget Média", d_media + " €"],
+            ["Production", d_prod + " €"],
+            ["Honoraires", d_fees + " €"],
+            ["Autres", d_other + " €"],
+            ["Coût Total", d_total_cost + " €"],
+            [""],
+            ["RÉSULTATS (Détaillé)"],
+            ["ROAS", d_roas],
+            ["ROI", d_roi],
+            ["Bénéfice Net", d_profit + " €"]
+        ];
+
+        // 4. Création du fichier
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        XLSX.utils.book_append_sheet(wb, ws, "Resultats");
+        XLSX.writeFile(wb, "Calcul_ROI_ROAS.xlsx");
     }
 </script>
 
