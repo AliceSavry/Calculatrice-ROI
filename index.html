@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outil Calcul ROI & ROAS - BTS Com</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         :root {
             --primary: #2563eb;
@@ -15,6 +18,7 @@
             --success-text: #166534;
             --danger-bg: #fee2e2;
             --danger-text: #991b1b;
+            --pdf-color: #D32F2F;
         }
 
         body {
@@ -34,7 +38,8 @@
             max-width: 600px;
             border-radius: 16px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            overflow: hidden; /* Pour que les onglets ne dépassent pas */
+            overflow: hidden;
+            padding-bottom: 20px; /* Espace pour le bouton export */
         }
 
         /* --- STYLES DES ONGLETS --- */
@@ -69,13 +74,13 @@
 
         /* --- CONTENU --- */
         .tab-content {
-            display: none; /* Caché par défaut */
+            display: none;
             padding: 2rem;
             animation: fadeIn 0.4s;
         }
 
         .tab-content.active {
-            display: block; /* Affiché si actif */
+            display: block;
         }
 
         @keyframes fadeIn {
@@ -91,10 +96,8 @@
             text-align: center;
         }
 
-        /* --- INPUTS COMMUNS --- */
-        .input-group {
-            margin-bottom: 1.25rem;
-        }
+        /* --- INPUTS --- */
+        .input-group { margin-bottom: 1.25rem; }
         
         label {
             display: block;
@@ -118,6 +121,7 @@
             font-size: 1rem;
             box-sizing: border-box;
             transition: border-color 0.2s;
+            background: white; /* Important pour PDF */
         }
 
         input[type="number"]:focus {
@@ -125,7 +129,7 @@
             border-color: var(--primary);
         }
 
-        /* --- SPÉCIFIQUE DÉTAILLÉ --- */
+        /* --- GRILLES & LISTES --- */
         .revenue-grid {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -200,11 +204,41 @@
         .status-profit { background: var(--success-bg); color: var(--success-text); }
         .status-loss { background: var(--danger-bg); color: var(--danger-text); }
 
+        /* --- BOUTON EXPORT PDF --- */
+        .export-section {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .btn-pdf {
+            background-color: white;
+            border: 2px solid var(--pdf-color);
+            color: var(--pdf-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-pdf:hover {
+            background-color: var(--pdf-color);
+            color: white;
+        }
+
     </style>
 </head>
 <body>
 
-<div class="main-container">
+<div class="main-container" id="printableArea">
     <div class="tabs-header">
         <button class="tab-btn active" onclick="openTab('simple', this)">1. Version Simple</button>
         <button class="tab-btn" onclick="openTab('detailed', this)">2. Version Détaillée</button>
@@ -310,25 +344,26 @@
         </div>
     </div>
 
+    <div class="export-section" data-html2canvas-ignore="true">
+        <button class="btn-pdf" onclick="downloadPDF()">
+            <span>📄</span> Exporter en PDF
+        </button>
+    </div>
+
 </div>
 
 <script>
     // --- GESTION DES ONGLETS ---
     function openTab(tabName, btnElement) {
-        // Cacher tous les contenus
         var contents = document.getElementsByClassName("tab-content");
         for (var i = 0; i < contents.length; i++) {
             contents[i].style.display = "none";
             contents[i].classList.remove("active");
         }
-
-        // Désactiver tous les boutons
         var btns = document.getElementsByClassName("tab-btn");
         for (var i = 0; i < btns.length; i++) {
             btns[i].classList.remove("active");
         }
-
-        // Activer le bon contenu et le bon bouton
         document.getElementById(tabName).style.display = "block";
         document.getElementById(tabName).classList.add("active");
         btnElement.classList.add("active");
@@ -341,7 +376,6 @@
         const other = parseFloat(document.getElementById('s_other').value) || 0;
         const totalCost = media + other;
         
-        // Si tout est vide, on cache
         if(rev===0 && totalCost===0) { document.getElementById('s_results').style.display='none'; return; }
         
         document.getElementById('s_results').style.display='block';
@@ -350,23 +384,19 @@
 
     // --- LOGIQUE DÉTAILLÉE ---
     function calcDetail() {
-        // Recettes
         const vol = parseFloat(document.getElementById('d_vol').value) || 0;
         const price = parseFloat(document.getElementById('d_price').value) || 0;
         const rev = vol * price;
 
-        // Dépenses
         const media = parseFloat(document.getElementById('d_media').value) || 0;
         const prod = parseFloat(document.getElementById('d_prod').value) || 0;
         const fees = parseFloat(document.getElementById('d_fees').value) || 0;
         const other = parseFloat(document.getElementById('d_other').value) || 0;
         const totalCost = media + prod + fees + other;
 
-        // Affichage des sous-totaux
         document.getElementById('d_displayRev').innerText = rev.toLocaleString('fr-FR');
         document.getElementById('d_displayCost').innerText = totalCost.toLocaleString('fr-FR');
 
-        // Si tout est vide, on cache
         if(rev===0 && totalCost===0) { document.getElementById('d_results').style.display='none'; return; }
 
         document.getElementById('d_results').style.display='block';
@@ -375,12 +405,10 @@
 
     // --- FONCTION DE CALCUL ET D'AFFICHAGE COMMUNE ---
     function updateUI(prefix, revenue, mediaCost, totalCost) {
-        // ROAS
         let roas = 0;
         if(mediaCost > 0) roas = revenue / mediaCost;
         document.getElementById(prefix + 'resRoas').innerText = roas.toFixed(2);
 
-        // ROI
         let roi = 0;
         let profit = revenue - totalCost;
         if(totalCost > 0) roi = ((revenue - totalCost) / totalCost) * 100;
@@ -388,23 +416,42 @@
         document.getElementById(prefix + 'resRoi').innerText = roi.toFixed(1) + '%';
         document.getElementById(prefix + 'resProfit').innerText = profit.toLocaleString('fr-FR');
 
-        // Couleurs
         const cardRoi = document.getElementById(prefix + 'cardRoi');
         const statusBox = document.getElementById(prefix + 'status');
 
         if(roi < 0) {
-            // Perte
             cardRoi.style.backgroundColor = '#ef4444';
             statusBox.style.display = 'block';
             statusBox.className = 'status-msg status-loss';
             statusBox.innerText = "⚠️ Attention : L'opération n'est pas rentable.";
         } else {
-            // Profit
-            cardRoi.style.backgroundColor = '#10b981'; // ou garder la couleur primaire si on préfère
+            cardRoi.style.backgroundColor = '#10b981';
             statusBox.style.display = 'block';
             statusBox.className = 'status-msg status-profit';
             statusBox.innerText = "✅ Bravo : L'opération est rentable.";
         }
+    }
+
+    // --- LOGIQUE EXPORT PDF ---
+    function downloadPDF() {
+        const element = document.getElementById('printableArea');
+        
+        // Astuce : On force l'affichage des valeurs saisies dans le HTML pour que le PDF les voit
+        document.querySelectorAll('input').forEach(input => {
+            input.setAttribute('value', input.value);
+        });
+
+        // Options du PDF
+        const opt = {
+            margin:       0.5,
+            filename:     'Calcul_ROI_Resultats.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 }, // Meilleure qualité
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Génération
+        html2pdf().set(opt).from(element).save();
     }
 </script>
 
